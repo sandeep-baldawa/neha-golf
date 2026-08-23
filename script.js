@@ -1,4 +1,5 @@
 const results = [
+  {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", notes:"Peninsula Fall 2026"},
   {date:"2024-08-17", event:"Coyote Creek", tour:"U.S. Kids Golf", score:"113", notes:"Historical tournament round"},
   {date:"2024-09-07", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"109", notes:"Historical tournament round"},
   {date:"2024-09-08", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"105", notes:"Historical tournament round"},
