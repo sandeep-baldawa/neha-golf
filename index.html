@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Neha Baldawa — Class of 2028 junior golfer recruiting profile." />
+  <title>Neha Baldawa | Junior Golf Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">NB</a>
+    <nav>
+      <a href="#results">Results</a>
+      <a href="#progress">Progress</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#profile">Profile</a>
+      <a href="#academics">Academics</a>
+      <a href="#videos">Videos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">CLASS OF 2028 • PLEASANTON, CALIFORNIA</p>
+        <h1>Neha Baldawa</h1>
+        <p class="hero-subtitle">Junior Golfer • Foothill High School</p>
+        <p class="hero-text">
+          Competitive junior golfer playing JGANC, U.S. Kids Golf and high-school golf.
+          Building toward consistent tournament scoring in the 70s and stronger regional fields.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button primary" href="#results">View Tournament Results</a>
+          <a class="button secondary" href="#contact">Coach Contact</a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="stat">
+          <span class="stat-number">77</span>
+          <span class="stat-label">Career Low Tournament Round</span>
+        </div>
+        <div class="stat-grid">
+          <div>
+            <strong>2028</strong>
+            <span>Graduation</span>
+          </div>
+          <div>
+            <strong>Right</strong>
+            <span>Handed</span>
+          </div>
+          <div>
+            <strong>Varsity</strong>
+            <span>Girls Golf</span>
+          </div>
+          <div>
+            <strong>CA</strong>
+            <span>Home State</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section quick-links" aria-label="Profile links">
+      <a href="#" class="link-card muted-link">JGS Profile <span>Add link ↗</span></a>
+      <a href="#" class="link-card muted-link">TUGR Profile <span>Add link ↗</span></a>
+      <a href="#" class="link-card muted-link">Swing Video <span>Add link ↗</span></a>
+      <a href="#" class="link-card muted-link">Golf Resume <span>Add PDF ↗</span></a>
+    </section>
+
+    <section class="section" id="results">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">TOURNAMENT HISTORY</p>
+          <h2>Recent Results</h2>
+        </div>
+        <div class="filters" id="resultFilters">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="2026">2026</button>
+          <button class="filter" data-filter="2025">2025</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Event / Course</th>
+              <th>Tour</th>
+              <th>Score</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+      </div>
+
+      <p class="footnote">
+        This first version is populated from the family’s current golf tracker. Verify official tournament links,
+        field sizes and rankings before publishing broadly.
+      </p>
+    </section>
+
+
+    <section class="section" id="progress">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SCORING PROGRESS</p>
+          <h2>Scoring Trend</h2>
+          <p class="section-intro">
+            Tournament scores over time. In golf, a lower score is better. The trend line uses a rolling
+            three-round average to make the underlying direction easier to see.
+          </p>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Tournament Score History</h3>
+            <p>Includes tracked 18-hole tournament rounds. Hover or tap a point for event details.</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="legend-dot score-dot"></i> Round</span>
+            <span><i class="legend-line"></i> 3-round average</span>
+          </div>
+        </div>
+        <div id="scoreChart" class="score-chart" role="img" aria-label="Tournament scoring history chart"></div>
+      </div>
+
+      <div class="progress-stats">
+        <div class="progress-stat">
+          <span class="progress-value">77</span>
+          <span class="progress-label">Career low</span>
+        </div>
+        <div class="progress-stat">
+          <span class="progress-value" id="recentAvg">—</span>
+          <span class="progress-label">Recent 5-round average</span>
+        </div>
+        <div class="progress-stat">
+          <span class="progress-value" id="recentLow">—</span>
+          <span class="progress-label">Recent 5-round low</span>
+        </div>
+        <div class="progress-stat">
+          <span class="progress-value" id="sub82Count">—</span>
+          <span class="progress-label">Rounds of 81 or better</span>
+        </div>
+      </div>
+
+      <p class="footnote">
+        Scores come from different courses, tees and field conditions, so this chart is best used to show
+        scoring direction rather than as a course-adjusted performance metric. Historical rounds are being
+        backfilled from official tournament records as they are verified.
+      </p>
+    </section>
+
+    <section class="section split" id="profile">
+      <div>
+        <p class="eyebrow">PLAYER PROFILE</p>
+        <h2>Golf Profile</h2>
+        <dl class="details">
+          <div><dt>Graduation Year</dt><dd>2028</dd></div>
+          <div><dt>High School</dt><dd>Foothill High School</dd></div>
+          <div><dt>Location</dt><dd>Pleasanton, California</dd></div>
+          <div><dt>Team</dt><dd>Varsity Girls Golf</dd></div>
+          <div><dt>Handedness</dt><dd>Right-handed</dd></div>
+          <div><dt>Primary Tours</dt><dd>JGANC • U.S. Kids Golf</dd></div>
+        </dl>
+      </div>
+
+      <div class="callout">
+        <p class="eyebrow">COACH SNAPSHOT</p>
+        <h3>Current Development Focus</h3>
+        <p>
+          Converting more tournament rounds into the high-70s / low-80s range,
+          reducing penalty strokes and big numbers, and progressively moving into deeper two-day fields.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="schedule">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">UPCOMING</p>
+          <h2>Tournament Schedule</h2>
+        </div>
+      </div>
+      <div id="scheduleGrid" class="schedule-grid"></div>
+    </section>
+
+    <section class="section split" id="academics">
+      <div>
+        <p class="eyebrow">STUDENT-ATHLETE</p>
+        <h2>Academics</h2>
+        <dl class="details">
+          <div><dt>School</dt><dd>Foothill High School</dd></div>
+          <div><dt>Class</dt><dd>2028</dd></div>
+          <div><dt>SAT</dt><dd>1460</dd></div>
+          <div><dt>GPA</dt><dd>Add verified GPA</dd></div>
+        </dl>
+      </div>
+      <div class="callout">
+        <p class="eyebrow">ACADEMIC INTERESTS</p>
+        <h3>Add intended major / interests</h3>
+        <p>
+          Use this space for academic interests, research, clubs, awards and other activities that help a coach
+          understand the full student-athlete profile.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="videos">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">VIDEO</p>
+          <h2>Swing & Short Game</h2>
+        </div>
+      </div>
+      <div class="video-grid">
+        <div class="video-placeholder">
+          <span>▶</span>
+          <h3>Driver / Full Swing</h3>
+          <p>Add YouTube or recruiting video link</p>
+        </div>
+        <div class="video-placeholder">
+          <span>▶</span>
+          <h3>Iron / Wedge</h3>
+          <p>Add face-on and down-the-line clips</p>
+        </div>
+        <div class="video-placeholder">
+          <span>▶</span>
+          <h3>Short Game / Putting</h3>
+          <p>Add chips, pitches and putting</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <p class="eyebrow">RECRUITING CONTACT</p>
+      <h2>Coach Contact</h2>
+      <p>
+        Add a parent/recruiting email and swing coach contact here. For a high-school student,
+        I recommend publishing email rather than a personal phone number or home address.
+      </p>
+      <a class="button primary muted-link" href="#">Add recruiting email</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>Neha Baldawa • Class of 2028 Junior Golf Profile</p>
+    <p>Last updated <span id="lastUpdated"></span></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
