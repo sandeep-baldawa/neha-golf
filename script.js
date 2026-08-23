@@ -121,7 +121,7 @@ function trackedRounds() {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-function movingAverage(values, windowSize = 3) {
+function movingAverage(values, windowSize = 5) {
   return values.map((_, i) => {
     if (i < windowSize - 1) return null;
     const slice = values.slice(i - windowSize + 1, i + 1);
@@ -129,74 +129,110 @@ function movingAverage(values, windowSize = 3) {
   });
 }
 
-function renderScoreChart() {
-  const container = document.getElementById("scoreChart");
-  if (!container) return;
+function formatShortDate(date) {
+  return new Date(date + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"2-digit"});
+}
 
-  const rounds = trackedRounds();
-  const values = rounds.map(r => r.numericScore);
-  const avg = movingAverage(values, 3);
+function drawScoreChart(containerId, rounds, options = {}) {
+  const container = document.getElementById(containerId);
+  if (!container || !rounds.length) return;
 
-  const width = 1000;
-  const height = 390;
-  const pad = {top: 24, right: 24, bottom: 76, left: 52};
+  const width = 1040;
+  const height = options.height || 390;
+  const pad = {top: 28, right: 28, bottom: 76, left: 58};
   const plotW = width - pad.left - pad.right;
   const plotH = height - pad.top - pad.bottom;
 
-  // Slightly padded range; lower scores are visually higher on the chart.
-  const minScore = Math.max(65, Math.floor(Math.min(...values) / 5) * 5 - 5);
-  const maxScore = Math.ceil(Math.max(...values) / 5) * 5 + 5;
+  const values = rounds.map(r => r.numericScore);
+  const avg = movingAverage(values, options.windowSize || 5);
+
+  const minData = Math.min(...values);
+  const maxData = Math.max(...values);
+  const minScore = options.minScore ?? Math.max(70, Math.floor((minData - 3) / 5) * 5);
+  const maxScore = options.maxScore ?? Math.min(120, Math.ceil((maxData + 3) / 5) * 5);
 
   const x = i => pad.left + (rounds.length === 1 ? plotW/2 : i * plotW / (rounds.length - 1));
   const y = value => pad.top + ((value - minScore) / (maxScore - minScore)) * plotH;
 
   let svg = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">`;
 
-  // Horizontal grid + labels
   for (let tick = minScore; tick <= maxScore; tick += 5) {
     const yy = y(tick);
     svg += `<line x1="${pad.left}" x2="${width-pad.right}" y1="${yy}" y2="${yy}" stroke="#dfe4df" stroke-width="1"/>`;
     svg += `<text x="${pad.left-12}" y="${yy+4}" text-anchor="end" font-size="12" fill="#66706a">${tick}</text>`;
   }
 
-  // 80 benchmark
-  if (80 >= minScore && 80 <= maxScore) {
-    const yy = y(80);
-    svg += `<line x1="${pad.left}" x2="${width-pad.right}" y1="${yy}" y2="${yy}" stroke="#1f6a43" stroke-width="1.5" stroke-dasharray="6 6" opacity=".55"/>`;
-    svg += `<text x="${width-pad.right}" y="${yy-7}" text-anchor="end" font-size="11" font-weight="700" fill="#1f6a43">80 benchmark</text>`;
-  }
-
-  // Raw score line
-  const rawPts = rounds.map((r,i) => `${x(i)},${y(r.numericScore)}`).join(" ");
-  svg += `<polyline points="${rawPts}" fill="none" stroke="#1f6a43" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity=".58"/>`;
-
-  // Moving average line
-  const avgSegments = [];
-  let current = [];
-  avg.forEach((v,i) => {
-    if (v === null) {
-      if (current.length) avgSegments.push(current);
-      current = [];
-    } else current.push(`${x(i)},${y(v)}`);
-  });
-  if (current.length) avgSegments.push(current);
-  avgSegments.forEach(seg => {
-    svg += `<polyline points="${seg.join(" ")}" fill="none" stroke="#15231b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>`;
-  });
-
-  // Points + sparse labels
-  rounds.forEach((r,i) => {
-    const xx = x(i), yy = y(r.numericScore);
-    const label = new Date(r.date + "T12:00:00").toLocaleDateString("en-US",{month:"short",year:"2-digit"});
-    svg += `<circle class="score-point" data-index="${i}" cx="${xx}" cy="${yy}" r="5.5" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0"/>`;
-    if (i === 0 || i === rounds.length-1 || i % 2 === 0) {
-      svg += `<text x="${xx}" y="${height-39}" text-anchor="middle" font-size="11" fill="#66706a">${label}</text>`;
+  [80, 85, 90].forEach(benchmark => {
+    if (benchmark >= minScore && benchmark <= maxScore) {
+      const yy = y(benchmark);
+      const dash = benchmark === 80 ? "6 6" : "3 6";
+      const opacity = benchmark === 80 ? ".55" : ".22";
+      svg += `<line x1="${pad.left}" x2="${width-pad.right}" y1="${yy}" y2="${yy}" stroke="#1f6a43" stroke-width="1.3" stroke-dasharray="${dash}" opacity="${opacity}"/>`;
+      if (benchmark === 80) {
+        svg += `<text x="${width-pad.right}" y="${yy-7}" text-anchor="end" font-size="11" font-weight="700" fill="#1f6a43">80 benchmark</text>`;
+      }
     }
   });
 
-  svg += `<text x="16" y="${pad.top + plotH/2}" transform="rotate(-90 16 ${pad.top + plotH/2})" text-anchor="middle" font-size="12" fill="#66706a">18-hole score • lower is better</text>`;
-  svg += `</svg>`;
+  // Year separator bands on the career chart.
+  if (options.showYears) {
+    let previousYear = null;
+    rounds.forEach((r, i) => {
+      const year = r.date.slice(0,4);
+      if (year !== previousYear) {
+        if (i > 0) {
+          const xx = (x(i-1)+x(i))/2;
+          svg += `<line x1="${xx}" x2="${xx}" y1="${pad.top}" y2="${height-pad.bottom+14}" stroke="#b9c2bc" stroke-width="1" stroke-dasharray="4 5"/>`;
+        }
+        previousYear = year;
+      }
+    });
+  }
 
+  const rawPts = rounds.map((r,i) => `${x(i)},${y(r.numericScore)}`).join(" ");
+  svg += `<polyline points="${rawPts}" fill="none" stroke="#1f6a43" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" opacity=".38"/>`;
+
+  let current = [];
+  avg.forEach((v,i) => {
+    if (v == null) {
+      if (current.length) {
+        svg += `<polyline points="${current.join(" ")}" fill="none" stroke="#15231b" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+      }
+      current = [];
+    } else {
+      current.push(`${x(i)},${y(v)}`);
+    }
+  });
+  if (current.length) {
+    svg += `<polyline points="${current.join(" ")}" fill="none" stroke="#15231b" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  }
+
+  const labelEvery = options.labelEvery || Math.max(1, Math.ceil(rounds.length / 10));
+  rounds.forEach((r,i) => {
+    const xx = x(i), yy = y(r.numericScore);
+    svg += `<circle class="score-point" data-chart="${containerId}" data-index="${i}" cx="${xx}" cy="${yy}" r="5.5" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0"/>`;
+
+    if (i === 0 || i === rounds.length-1 || i % labelEvery === 0) {
+      const label = formatShortDate(r.date);
+      svg += `<text x="${xx}" y="${height-42}" text-anchor="middle" font-size="11" fill="#66706a">${label}</text>`;
+    }
+  });
+
+  if (options.showYears) {
+    const yearGroups = {};
+    rounds.forEach((r,i) => {
+      const year = r.date.slice(0,4);
+      yearGroups[year] ||= [];
+      yearGroups[year].push(i);
+    });
+    Object.entries(yearGroups).forEach(([year, idxs]) => {
+      const center = (x(idxs[0]) + x(idxs[idxs.length-1]))/2;
+      svg += `<text x="${center}" y="${height-18}" text-anchor="middle" font-size="13" font-weight="800" fill="#15231b">${year}</text>`;
+    });
+  }
+
+  svg += `<text x="17" y="${pad.top + plotH/2}" transform="rotate(-90 17 ${pad.top + plotH/2})" text-anchor="middle" font-size="12" fill="#66706a">18-hole score • lower is better</text>`;
+  svg += `</svg>`;
   container.innerHTML = svg;
 
   let tooltip = document.querySelector(".chart-tooltip");
@@ -205,7 +241,7 @@ function renderScoreChart() {
     tooltip.className = "chart-tooltip";
     document.body.appendChild(tooltip);
   }
-
+  const allCharts = {scoreChart: rounds, recentScoreChart: rounds};
   function showTip(el, evt) {
     const r = rounds[Number(el.dataset.index)];
     const d = new Date(r.date + "T12:00:00").toLocaleDateString("en-US",{month:"short", day:"numeric", year:"numeric"});
@@ -224,6 +260,16 @@ function renderScoreChart() {
     el.addEventListener("focus", e => showTip(el,e));
     el.addEventListener("blur", hideTip);
   });
+}
+
+function renderScoreChart() {
+  const rounds = trackedRounds();
+  drawScoreChart("scoreChart", rounds, {showYears:true, windowSize:5, minScore:75, maxScore:115, labelEvery:Math.max(1, Math.ceil(rounds.length/9))});
+
+  const recent = rounds.slice(-15);
+  const recentMin = Math.max(75, Math.floor((Math.min(...recent.map(r=>r.numericScore))-2)/5)*5);
+  const recentMax = Math.min(105, Math.ceil((Math.max(...recent.map(r=>r.numericScore))+2)/5)*5);
+  drawScoreChart("recentScoreChart", recent, {windowSize:5, minScore:recentMin, maxScore:recentMax, height:330, labelEvery:2});
 
   const recent5 = rounds.slice(-5).map(r => r.numericScore);
   if (recent5.length) {
@@ -232,6 +278,25 @@ function renderScoreChart() {
     document.getElementById("recentLow").textContent = Math.min(...recent5);
   }
   document.getElementById("sub82Count").textContent = rounds.filter(r => r.numericScore <= 81).length;
+
+  const byYear = {};
+  rounds.forEach(r => {
+    const year = r.date.slice(0,4);
+    byYear[year] ||= [];
+    byYear[year].push(r.numericScore);
+  });
+  const yearSummary = document.getElementById("yearSummary");
+  if (yearSummary) {
+    yearSummary.innerHTML = Object.entries(byYear).map(([year, vals]) => {
+      const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+      const low = Math.min(...vals);
+      return `<article class="year-card">
+        <div class="year">${year}</div>
+        <div class="year-main"><span class="year-avg">${avg.toFixed(1)}</span><span class="year-label">avg</span></div>
+        <div class="year-meta">${vals.length} rounds • low ${low}</div>
+      </article>`;
+    }).join("");
+  }
 }
 
 

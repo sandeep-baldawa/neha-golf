@@ -363,3 +363,51 @@ footer {
   .progress-stats { grid-template-columns: 1fr; }
   .chart-card { padding: 16px; }
 }
+
+
+.year-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0 0 18px;
+}
+.year-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+.year-card .year {
+  font-size: 13px;
+  font-weight: 850;
+  color: var(--accent);
+  letter-spacing: .08em;
+}
+.year-card .year-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 8px;
+}
+.year-card .year-avg {
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 850;
+  letter-spacing: -.04em;
+}
+.year-card .year-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+.year-card .year-meta {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.recent-chart-card { margin-top: 16px; }
+.compact-chart { min-height: 330px; }
+.compact-chart svg { height: 330px; min-width: 760px; }
+
+@media (max-width: 850px) {
+  .year-summary { grid-template-columns: 1fr; }
+}

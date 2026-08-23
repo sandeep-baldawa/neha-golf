@@ -106,30 +106,43 @@
     </section>
 
 
+
     <section class="section" id="progress">
       <div class="section-heading">
         <div>
           <p class="eyebrow">SCORING PROGRESS</p>
           <h2>Scoring Trend</h2>
           <p class="section-intro">
-            Tournament scores over time. In golf, a lower score is better. The trend line uses a rolling
-            three-round average to make the underlying direction easier to see.
+            A clearer view of Neha’s tournament progression. Lower scores are better.
+            The main chart uses tournament sequence instead of crowding every calendar date onto the axis.
           </p>
         </div>
       </div>
 
+      <div class="year-summary" id="yearSummary"></div>
+
       <div class="chart-card">
         <div class="chart-header">
           <div>
-            <h3>Tournament Score History</h3>
-            <p>Includes tracked 18-hole tournament rounds. Hover or tap a point for event details.</p>
+            <h3>Career Tournament Trend</h3>
+            <p>Each dot is an 18-hole tournament round. Only selected dates are labeled to keep the chart readable.</p>
           </div>
           <div class="chart-legend">
             <span><i class="legend-dot score-dot"></i> Round</span>
-            <span><i class="legend-line"></i> 3-round average</span>
+            <span><i class="legend-line"></i> 5-round average</span>
           </div>
         </div>
-        <div id="scoreChart" class="score-chart" role="img" aria-label="Tournament scoring history chart"></div>
+        <div id="scoreChart" class="score-chart" role="img" aria-label="Career tournament scoring history chart"></div>
+      </div>
+
+      <div class="chart-card recent-chart-card">
+        <div class="chart-header">
+          <div>
+            <h3>Recent Form — Last 15 Rounds</h3>
+            <p>This zoomed-in view makes the current scoring level easier to judge.</p>
+          </div>
+        </div>
+        <div id="recentScoreChart" class="score-chart compact-chart" role="img" aria-label="Recent tournament scoring chart"></div>
       </div>
 
       <div class="progress-stats">
@@ -152,8 +165,8 @@
       </div>
 
       <p class="footnote">
-        Scores come from different courses, tees and field conditions, so this chart is best used to show
-        scoring direction rather than as a course-adjusted performance metric. Historical rounds include U.S. Kids Golf results from 2024 and JGANC, U.S. Kids Golf and JTNC results from 2025–2026.
+        Scores come from different courses, tees and field conditions, so the charts show scoring direction rather than
+        a course-adjusted performance metric.
       </p>
     </section>
 
