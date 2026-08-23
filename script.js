@@ -212,9 +212,9 @@ function drawScoreChart(containerId, rounds, options = {}) {
     const xx = x(i), yy = y(r.numericScore);
     svg += `<circle class="score-point" data-chart="${containerId}" data-index="${i}" cx="${xx}" cy="${yy}" r="5.5" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0"/>`;
 
-    if (i === 0 || i === rounds.length-1 || i % labelEvery === 0) {
+    if (!options.showYears && (i === 0 || i === rounds.length-1 || i % labelEvery === 0)) {
       const label = formatShortDate(r.date);
-      svg += `<text x="${xx}" y="${height-42}" text-anchor="middle" font-size="11" fill="#66706a">${label}</text>`;
+      svg += `<text x="${xx}" y="${height-38}" transform="rotate(-35 ${xx} ${height-38})" text-anchor="end" font-size="11" fill="#66706a">${label}</text>`;
     }
   });
 
@@ -227,7 +227,7 @@ function drawScoreChart(containerId, rounds, options = {}) {
     });
     Object.entries(yearGroups).forEach(([year, idxs]) => {
       const center = (x(idxs[0]) + x(idxs[idxs.length-1]))/2;
-      svg += `<text x="${center}" y="${height-18}" text-anchor="middle" font-size="13" font-weight="800" fill="#15231b">${year}</text>`;
+      svg += `<text x="${center}" y="${height-30}" text-anchor="middle" font-size="15" font-weight="850" fill="#15231b">${year}</text>`;
     });
   }
 
@@ -269,7 +269,7 @@ function renderScoreChart() {
   const recent = rounds.slice(-15);
   const recentMin = Math.max(75, Math.floor((Math.min(...recent.map(r=>r.numericScore))-2)/5)*5);
   const recentMax = Math.min(105, Math.ceil((Math.max(...recent.map(r=>r.numericScore))+2)/5)*5);
-  drawScoreChart("recentScoreChart", recent, {windowSize:5, minScore:recentMin, maxScore:recentMax, height:330, labelEvery:2});
+  drawScoreChart("recentScoreChart", recent, {windowSize:5, minScore:recentMin, maxScore:recentMax, height:330, labelEvery:3});
 
   const recent5 = rounds.slice(-5).map(r => r.numericScore);
   if (recent5.length) {
