@@ -212,10 +212,12 @@ function drawScoreChart(containerId, rounds, options = {}) {
     const xx = x(i), yy = y(r.numericScore);
     svg += `<circle class="score-point" data-chart="${containerId}" data-index="${i}" cx="${xx}" cy="${yy}" r="5.5" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0"/>`;
 
-    if (!options.showYears && (i === 0 || i === rounds.length-1 || i % labelEvery === 0)) {
-      const label = formatShortDate(r.date);
-      svg += `<text x="${xx}" y="${height-38}" transform="rotate(-35 ${xx} ${height-38})" text-anchor="end" font-size="11" fill="#66706a">${label}</text>`;
+    if (!options.showYears && (i === 0 || i === Math.floor((rounds.length - 1)/2) || i === rounds.length - 1)) {
+      const label = i === 0 ? "Earlier" : (i === rounds.length - 1 ? "Latest" : "Recent");
+      svg += `<text x="${xx}" y="${height-30}" text-anchor="middle" font-size="12" font-weight="700" fill="#66706a">${label}</text>`;
     }
+
+    
   });
 
   if (options.showYears) {
