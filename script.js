@@ -77,7 +77,9 @@ function prettyDate(value) {
 
 function renderResults(filter="all") {
   const body = document.getElementById("resultsBody");
-  const filtered = results.filter(r => filter === "all" || r.date.startsWith(filter));
+  const filtered = results
+    .filter(r => filter === "all" || r.date.startsWith(filter))
+    .sort((a, b) => b.date.localeCompare(a.date));
   body.innerHTML = filtered.map(r => `
     <tr>
       <td>${prettyDate(r.date)}</td>
