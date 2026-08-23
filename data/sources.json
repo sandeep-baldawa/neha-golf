@@ -1,0 +1,18 @@
+{
+  "player": {
+    "first_name": "Neha",
+    "last_name": "Baldawa",
+    "full_name": "Neha Baldawa"
+  },
+  "jganc": {
+    "enabled": true,
+    "program_url": "https://www.bluegolf.com/junior/programs/jganc/index.html"
+  },
+  "us_kids": {
+    "enabled": true,
+    "tour_urls": [
+      "https://tournaments.uskidsgolf.com/tournaments/local/find-local-tour/284864/bay-area-ca"
+    ],
+    "extra_event_urls": []
+  }
+}
