@@ -1,5 +1,5 @@
 const results = [
-  {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", notes:"Peninsula Fall 2026"},
+  {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", notes:"1st Place • 40–39 • 1 birdie • 10 pars • 2 doubles"},
   {date:"2024-08-17", event:"Coyote Creek", tour:"U.S. Kids Golf", score:"113", notes:"Historical tournament round"},
   {date:"2024-09-07", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"109", notes:"Historical tournament round"},
   {date:"2024-09-08", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"105", notes:"Historical tournament round"},
@@ -62,9 +62,7 @@ const results = [
 ];
 
 const schedule = [
-  {date:"Aug 23, 2026", event:"Shoreline", tour:"U.S. Kids", status:"Playing"},
-  {date:"Aug 30, 2026", event:"Baylands Tour Championship", tour:"U.S. Kids", status:"Confirmed"},
-  {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2", tour:"JGANC", status:"Confirmed"},
+  {date:"Sep 5–6, 2026", event:"San Ramon City Junior", tour:"JGANC", status:"Confirmed • Two-day event"},
   {date:"Sep 12, 2026", event:"Napa — Kennedy Park", tour:"U.S. Kids", status:"Confirmed"},
   {date:"Sep 20, 2026", event:"Paradise Valley", tour:"U.S. Kids", status:"Confirmed"},
   {date:"Sep 27, 2026", event:"Las Positas", tour:"U.S. Kids", status:"Confirmed"},
@@ -305,7 +303,7 @@ function renderScoreChart() {
 }
 
 
-document.getElementById("lastUpdated").textContent = "August 23, 2026";
+document.getElementById("lastUpdated").textContent = "August 24, 2026";
 renderResults();
 renderSchedule();
 renderScoreChart();
