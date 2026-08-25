@@ -1,6 +1,8 @@
 const results = [
+  {date:"2024-08-24", event:"San Ramon Golf Club", tour:"U.S. Kids Golf", score:"101", notes:"San Francisco Local Tour"},
+  {date:"2024-08-05", event:"Presidio Golf Course", tour:"U.S. Kids Golf", score:"114", notes:"San Francisco Local Tour"},
   {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", notes:"1st Place • 40–39 • 1 birdie • 10 pars • 2 doubles"},
-  {date:"2024-08-17", event:"Coyote Creek", tour:"U.S. Kids Golf", score:"113", notes:"Historical tournament round"},
+  {date:"2024-08-17", event:"Coyote Creek Golf Club", tour:"U.S. Kids Golf", score:"113", notes:"San Francisco Local Tour"},
   {date:"2024-09-07", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"109", notes:"Historical tournament round"},
   {date:"2024-09-08", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"105", notes:"Historical tournament round"},
   {date:"2024-10-27", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"105", notes:"Historical tournament round"},
@@ -58,7 +60,6 @@ const results = [
   {date:"2025-11-24", event:"Del Monte", tour:"JTNC", score:"105", notes:"Day 1"},
   {date:"2025-11-03", event:"NCS Division I — Windsor", tour:"High School", score:"77", notes:"Postseason"},
   {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High School", score:"77", notes:"Career low tournament round"},
-  {date:"2025-01-01", event:"Monarch Bay", tour:"JGANC", score:"79", notes:"2025 personal best noted in tracker"}
 ];
 
 const schedule = [
@@ -303,7 +304,7 @@ function renderScoreChart() {
 }
 
 
-document.getElementById("lastUpdated").textContent = "August 24, 2026";
+document.getElementById("lastUpdated").textContent = "August 25, 2026";
 renderResults();
 renderSchedule();
 renderScoreChart();
