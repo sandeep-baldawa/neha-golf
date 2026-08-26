@@ -64,6 +64,11 @@ const results = [
 
 const schedule = [
   {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", status:"Confirmed • Tee time 12:01 PM"},
+  {date:"Sep 12, 2026", event:"Napa Golf Course at Kennedy Park", tour:"U.S. Kids Golf", status:"Registered"},
+  {date:"Sep 20, 2026", event:"Paradise Valley Golf Course", tour:"U.S. Kids Golf", status:"Registered"},
+  {date:"Sep 27, 2026", event:"Las Positas Golf Course", tour:"U.S. Kids Golf", status:"Registered"},
+  {date:"Oct 3, 2026", event:"San Ramon Golf Club", tour:"U.S. Kids Golf", status:"Registered"},
+  {date:"Oct 4, 2026", event:"San Ramon Golf Club (Tour Championship)", tour:"U.S. Kids Golf", status:"Registered"},
   {date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", status:"Confirmed • Haggin Oaks"},
   {date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", status:"Confirmed • Paradise Valley"}
 ];
