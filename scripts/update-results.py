@@ -30,7 +30,7 @@ SOURCES_JSON = ROOT / "data" / "sources.json"
 LOG_JSON = ROOT / "data" / "update-log.json"
 REVIEW_JSON = ROOT / "data" / "review-needed.json"
 
-UA = "NehaGolfProfileUpdater/1.0 (+GitHub Pages personal recruiting profile)"
+UA = "NehaGolfProfileUpdater/1.1 (+GitHub Pages personal recruiting profile)"
 TIMEOUT = 25
 
 
@@ -59,7 +59,10 @@ def clean(s: str) -> str:
 
 
 def player_regex(first: str, last: str):
-    return re.compile(rf"\b{re.escape(first)}\b.*\b{re.escape(last)}\b|\b{re.escape(last)}\b.*\b{re.escape(first)}\b", re.I)
+    return re.compile(
+        rf"\b{re.escape(first)}\b.*\b{re.escape(last)}\b|\b{re.escape(last)}\b.*\b{re.escape(first)}\b",
+        re.I,
+    )
 
 
 def extract_year(text: str, fallback: int | None = None) -> int:
@@ -101,7 +104,7 @@ def parse_dates(text: str) -> list[str]:
     )
     for m in rg2.finditer(text):
         month = MONTHS[m.group(1).lower()]
-        out.append(f"{int(m.group(4)):04d}-{month:02d}-{int(m.group(2)):02d}")
+        out.append(f"{int(m.group(3)):04d}-{month:02d}-{int(m.group(2)):02d}")
     return sorted(set(out))
 
 
@@ -110,8 +113,7 @@ def scores_from_row(row_text: str) -> list[int]:
     nums = [int(x) for x in re.findall(r"(?<![\d.])(\d{2,3})(?![\d.])", row_text)]
     # Real 18-hole junior tournament scores. Exclude rankings, yards, totals, years.
     nums = [n for n in nums if 60 <= n <= 130]
-    # Remove obvious duplicate consecutive values.
-    result = []
+    result: list[int] = []
     for n in nums:
         if not result or result[-1] != n:
             result.append(n)
@@ -147,8 +149,7 @@ def find_player_rows(soup: BeautifulSoup, first: str, last: str):
             if not parent:
                 break
             txt = clean(parent.get_text(" ", strip=True))
-            nums = scores_from_row(txt)
-            if nums:
+            if scores_from_row(txt):
                 found.append((parent, txt))
                 break
             parent = parent.parent
@@ -193,10 +194,9 @@ def parse_result_page(url: str, tour: str, first: str, last: str) -> list[Round]
         scores = scores[:4]
 
         if not dates:
-            # We never invent a date. Send to review queue instead.
+            # We never invent a date.
             continue
 
-        # Match dates to scores in order. For single-day pages use the one date.
         for i, score in enumerate(scores):
             date = dates[min(i, len(dates) - 1)]
             rounds.append(
@@ -216,7 +216,6 @@ def collect_jganc(cfg, first, last) -> list[Round]:
     if not cfg.get("enabled"):
         return []
     html, final = get(cfg["program_url"])
-    # Public BlueGolf program pages expose Leaderboard links after events post.
     links = discover_links(final, html, ["leaderboard", "results"])
     rounds = []
     for url in links:
@@ -235,7 +234,6 @@ def collect_us_kids(cfg, first, last) -> list[Round]:
     for tour_url in cfg.get("tour_urls", []):
         try:
             html, final = get(tour_url)
-            # Tour pages expose event links; event pages then expose Results links.
             event_links = discover_links(final, html, ["find-tournament", "results"])
             candidate_pages.update(event_links)
             for ev in event_links:
@@ -256,27 +254,59 @@ def collect_us_kids(cfg, first, last) -> list[Round]:
     return rounds
 
 
-def existing_rounds(js_text: str):
-    rg = re.compile(
-        r'\{date:"([^"]+)",\s*event:"([^"]+)",\s*tour:"([^"]+)",\s*score:"([^"]+)",\s*notes:"([^"]*)"\}'
-    )
+# --- Reading the existing array -------------------------------------------
+# Rows may carry optional keys (tees, yardage, finish, par) in any order, so
+# each object literal is located first and then parsed field by field. The old
+# fixed-order regex silently failed to see rows with extra fields, which made
+# the updater re-add rounds that were already on the site.
+
+ROW_RE = re.compile(r"\{\s*date:\s*\"[^\"]+\".*?\}", re.S)
+FIELD_RE = re.compile(r"(\w+)\s*:\s*\"((?:[^\"\\]|\\.)*)\"")
+
+
+def results_block(js_text: str) -> tuple[int, int]:
+    start = js_text.find("const results = [")
+    if start < 0:
+        raise RuntimeError("Could not find results array in script.js")
+    end = js_text.find("\n];", start)
+    if end < 0:
+        raise RuntimeError("Could not find the end of the results array in script.js")
+    return start, end
+
+
+def existing_rounds(js_text: str) -> list[dict]:
+    start, end = results_block(js_text)
     rows = []
-    for m in rg.finditer(js_text):
-        score_match = re.search(r"\d+", m.group(4))
+    for m in ROW_RE.finditer(js_text, start, end):
+        fields = dict(FIELD_RE.findall(m.group(0)))
+        if "date" not in fields or "score" not in fields:
+            continue
+        score_match = re.search(r"\d+", fields["score"])
         if not score_match:
             continue
         rows.append({
-            "date": m.group(1),
-            "event": m.group(2),
-            "tour": m.group(3),
+            "date": fields["date"],
+            "event": fields.get("event", ""),
+            "tour": fields.get("tour", ""),
             "score": int(score_match.group()),
-            "notes": m.group(5),
+            "notes": fields.get("notes", ""),
         })
     return rows
 
 
 def js_escape(s: str) -> str:
-    return s.replace("\\", "\\\\").replace('"', '\\"')
+    """Escape for a JS double-quoted string, and neutralise angle brackets.
+
+    Event titles come from third-party pages and are rendered into the DOM, so
+    `<` and `>` are escaped here as well as in the front-end renderer.
+    """
+    return (
+        s.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("<", "\\u003C")
+        .replace(">", "\\u003E")
+        .replace("\n", " ")
+    )
 
 
 def insert_rounds(js_text: str, rounds: list[Round]) -> str:
@@ -300,13 +330,18 @@ def main():
 
     js = SCRIPT_JS.read_text()
     existing = existing_rounds(js)
+    if not existing:
+        raise RuntimeError(
+            "Parsed zero existing rounds from script.js. Refusing to run so that "
+            "the whole log is not re-imported as duplicates."
+        )
     exact = {(r["date"], r["score"]) for r in existing}
+    print(f"Existing rounds on site: {len(existing)}")
 
     discovered = []
     discovered.extend(collect_jganc(cfg["jganc"], first, last))
     discovered.extend(collect_us_kids(cfg["us_kids"], first, last))
 
-    # Deduplicate discovery.
     unique = {}
     for r in discovered:
         unique[(r.date, r.tour, r.score, r.event)] = r
@@ -341,6 +376,7 @@ def main():
             old_log = []
     old_log.append({
         "checked_at": now,
+        "existing_count": len(existing),
         "discovered_count": len(discovered),
         "added": [asdict(x) for x in additions],
         "review_count": len(review),
