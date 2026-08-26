@@ -12,10 +12,10 @@ const results = [
   {date:"2025-03-30", event:"Shoreline Golf Links", tour:"JGANC", score:"104", notes:"Historical tournament round"},
   {date:"2025-04-13", event:"Diablo Creek", tour:"JGANC", score:"90", notes:"Historical tournament round"},
   {date:"2025-04-21", event:"Bay View", tour:"JGANC", score:"89", notes:"Historical tournament round"},
-  {date:"2025-05-03", event:"Moffett Field", tour:"JGANC", score:"87", notes:"Historical tournament round"},
-  {date:"2025-05-04", event:"Moffett Field", tour:"JGANC", score:"89", notes:"Historical tournament round"},
-  {date:"2025-05-10", event:"Baylands", tour:"JGANC", score:"102", notes:"Historical tournament round"},
-  {date:"2025-05-17", event:"Coyote Creek", tour:"JGANC", score:"89", notes:"Historical tournament round"},
+  {date:"2025-05-03", event:"The Club at Moffett Field", tour:"U.S. Kids Golf", score:"87", notes:"2nd Place"},
+  {date:"2025-05-04", event:"The Club at Moffett Field", tour:"U.S. Kids Golf", score:"89", notes:"2nd Place"},
+  {date:"2025-05-10", event:"Baylands Golf Links", tour:"U.S. Kids Golf", score:"102", notes:"3rd Place"},
+  {date:"2025-05-18", event:"Coyote Creek Golf Club (Tour Championship)", tour:"U.S. Kids Golf", score:"89", notes:"2nd Place • Tour Championship"},
   {date:"2025-06-07", event:"Coyote Creek", tour:"JGANC", score:"91", notes:"Historical tournament round"},
   {date:"2025-06-08", event:"Bay View", tour:"JGANC", score:"97", notes:"Historical tournament round"},
   {date:"2025-06-24", event:"Bay View", tour:"JGANC", score:"101", notes:"Historical tournament round"},
@@ -63,11 +63,9 @@ const results = [
 ];
 
 const schedule = [
-  {date:"Sep 5–6, 2026", event:"San Ramon City Junior", tour:"JGANC", status:"Confirmed • Two-day event"},
-  {date:"Sep 12, 2026", event:"Napa — Kennedy Park", tour:"U.S. Kids", status:"Confirmed"},
-  {date:"Sep 20, 2026", event:"Paradise Valley", tour:"U.S. Kids", status:"Confirmed"},
-  {date:"Sep 27, 2026", event:"Las Positas", tour:"U.S. Kids", status:"Confirmed"},
-  {date:"Oct 3–4, 2026", event:"San Ramon + Tour Championship", tour:"U.S. Kids", status:"Confirmed"}
+  {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", status:"Confirmed • Tee time 12:01 PM"},
+  {date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", status:"Confirmed • Haggin Oaks"},
+  {date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", status:"Confirmed • Paradise Valley"}
 ];
 
 function prettyDate(value) {
@@ -304,7 +302,7 @@ function renderScoreChart() {
 }
 
 
-document.getElementById("lastUpdated").textContent = "August 25, 2026";
+document.getElementById("lastUpdated").textContent = "August 26, 2026";
 renderResults();
 renderSchedule();
 renderScoreChart();
