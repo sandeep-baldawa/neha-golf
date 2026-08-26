@@ -157,7 +157,7 @@ function drawScoreChart(containerId, rounds, options = {}) {
   const maxScore = options.maxScore ?? Math.min(120, Math.ceil((maxData + 3) / 5) * 5);
 
   const x = i => pad.left + (rounds.length === 1 ? plotW/2 : i * plotW / (rounds.length - 1));
-  const y = value => pad.top + ((value - minScore) / (maxScore - minScore)) * plotH;
+  const y = value => pad.top + ((maxScore - value) / (maxScore - minScore)) * plotH;
 
   let svg = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">`;
 
