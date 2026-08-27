@@ -37,6 +37,30 @@ for you to forget.
    in `index.html` reference it, so without it a link texted to a coach shows a
    blank preview card.
 
+## High school matches are 9 holes and live in their own array
+
+`matches` in `script.js` holds the EBAL match scores. They are deliberately
+separate from `results`: a 9-hole 38 is not comparable to an 18-hole 79, so
+they never enter the 18-hole averages, the career low, or either chart.
+
+Match dates came from Google Photos, but those turned out to be **sync times,
+not play dates** — three of the four land on a Sunday, which EBAL match play
+does not. Each row therefore carries `datePrecision:"month"`, so the page prints
+only "Sep 2025" while still using the full date to sort. Nothing on the site
+claims a day it cannot support.
+
+The underlying values are Ruby Hill 09-09, Crow Canyon 09-14, Dublin Ranch
+09-21, Bridges 09-28. If you confirm a real match date, replace it and delete
+that row's `datePrecision` key — the exact date will then display.
+
+`date` is optional on a match row. A row without one still renders and still
+counts toward the match average; it just prints a dash in the date column.
+
+Two of the four scores came from spreadsheet tab names rather than a scorecard
+and are marked `verified:false`. That flag is informational only — it does not
+affect the page and the checklist does not nag about it. Dublin Ranch and Ruby
+Hill have no `par` recorded, so their over-par column prints a dash.
+
 ## Rounds needing verification against official results
 
 - **2025-08-17, Shoreline Golf Links, 92.** Probably round 2 of the Mountain
@@ -100,7 +124,7 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-26a`. Anything else — or no output at all —
+The current build is `2026-08-26e`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
 
 ## Publishing

@@ -10,7 +10,7 @@
 
 const config = {
   // --- Required before sharing the URL with any coach ---------------------
-  recruitingEmail: "nehabaldawa2020@gmail.com",   // parent-monitored
+  recruitingEmail: "",          // e.g. "neha.golf@example.com" — a parent-monitored address
   emailOwner: "parent-monitored inbox",
 
   // --- Optional. Each one appears only once it has a value ----------------
@@ -117,6 +117,39 @@ const results = [
   {date:"2024-08-17", event:"Coyote Creek Golf Club", tour:"U.S. Kids Golf", score:"113", notes:"San Francisco Local Tour"},
   {date:"2024-08-05", event:"Presidio Golf Course", tour:"U.S. Kids Golf", score:"114", notes:"San Francisco Local Tour"},
 ];
+
+/* ==========================================================================
+   High school matches — 9 holes.
+   These are kept in their own array on purpose. A 9-hole 38 is not comparable
+   to an 18-hole 79, so these never enter the 18-hole averages, the career low,
+   or either chart. They get their own section and their own average.
+
+   `date` is optional here: EBAL match dates were not recorded, so the section
+   presents the season as a block rather than inventing dates. Add a date to a
+   row and it will display; leave it out and the row still counts.
+   `par` is the 9-hole par for the tees played — omit it if you are unsure and
+   the row prints a dash rather than a wrong number over par.
+   `verified` records whether a score came from a scorecard or from the season
+   spreadsheet. It is informational only and does not affect the page.
+   `datePrecision:"month"` means the day is not trusted — these dates came from
+   Google Photos sync times, not from the scorecards — so the page prints only
+   the month while still using the full date to sort. Remove that key on any
+   row once you have confirmed the real match date.
+   ========================================================================== */
+
+const matches = [
+  {date:"2025-09-28", datePrecision:"month", event:"The Bridges Golf Club", score:43, par:38, notes:"4·7·4·5·4·5·4·6·4", verified:true},
+  {date:"2025-09-21", datePrecision:"month", event:"Dublin Ranch Golf Course", score:35, verified:false},
+  {date:"2025-09-14", datePrecision:"month", event:"Crow Canyon Country Club", score:38, par:34, notes:"5·6·5·4·4·3·4·3·4", verified:true},
+  {date:"2025-09-09", datePrecision:"month", event:"Ruby Hill Golf Club", score:36, verified:false},
+];
+
+matches.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+
+const matchSeason = {
+  label: "Fall 2025 EBAL season",
+  window: "August–September 2025",
+};
 
 const schedule = [
   {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
@@ -369,6 +402,65 @@ function renderProfile() {
   ]);
 }
 
+const prettyMonth = value =>
+  new Date(value + "T12:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
+const matchDate = m => {
+  if (!m.date) return "—";
+  return m.datePrecision === "month" ? prettyMonth(m.date) : prettyDate(m.date);
+};
+
+function renderMatches() {
+  const section = $("matches");
+  const navLink = document.querySelector('[data-nav="matches"]');
+  if (!matches.length) {
+    section.hidden = true;
+    if (navLink) navLink.remove();
+    return;
+  }
+  section.hidden = false;
+
+  const scores = matches.map(m => m.score);
+  const withPar = matches.filter(m => Number.isFinite(m.par));
+
+  const dated = matches.filter(m => m.date).map(m => m.date).sort();
+  const anyApprox = matches.some(m => m.datePrecision === "month");
+  const span = !dated.length
+    ? matchSeason.window
+    : anyApprox
+      ? (prettyMonth(dated[0]) === prettyMonth(dated[dated.length - 1])
+          ? prettyMonth(dated[0])
+          : `${prettyMonth(dated[0])} to ${prettyMonth(dated[dated.length - 1])}`)
+      : `${prettyDate(dated[0])} to ${prettyDate(dated[dated.length - 1])}`;
+  setText("matchIntro",
+    `${matches.length} nine-hole EBAL matches, ${span}, averaging ${mean(scores).toFixed(1)}. ` +
+    `Nine-hole scores are excluded from every 18-hole average and chart on this page.`);
+
+  $("matchBody").innerHTML = matches.map(m => {
+    const toPar = Number.isFinite(m.par) ? (m.score - m.par) : null;
+    const toParText = toPar === null ? "—" : (toPar > 0 ? `+${toPar}` : toPar === 0 ? "E" : String(toPar));
+    return `
+      <tr>
+        <td class="cell-date">${esc(matchDate(m))}</td>
+        <td><strong>${esc(m.event)}</strong></td>
+        <td class="score">${esc(m.score)}</td>
+        <td class="cell-muted">${Number.isFinite(m.par) ? esc(m.par) : "—"}</td>
+        <td><span class="finish">${esc(toParText)}</span></td>
+        <td class="cell-muted">${esc(m.notes) || "—"}</td>
+      </tr>`;
+  }).join("");
+
+  setText("matchAvg", mean(scores).toFixed(1));
+  setText("matchLow", Math.min(...scores));
+  if (withPar.length) {
+    const best = withPar.reduce((a, b) => (a.score - a.par <= b.score - b.par ? a : b));
+    setText("matchBestPar", `+${best.score - best.par}`);
+    setText("matchBestParLabel", `Best round vs. par — ${best.event}`);
+  } else {
+    $("matchBestParStat").hidden = true;
+  }
+}
+
 function renderHighlights() {
   const recent = countingRounds.slice(-3).map(r => r.value).join(" • ");
   const latest = countingRounds[countingRounds.length - 1];
@@ -391,7 +483,7 @@ function renderHighlights() {
     {
       kicker: "HIGH SCHOOL",
       value: "EBAL All-League",
-      body: "2025 season. Qualified through to the CIF North Coast Section Division I Championship.",
+      body: `2025 season. ${matches.length} nine-hole EBAL matches averaging ${mean(matches.map(m => m.score)).toFixed(1)}, low ${Math.min(...matches.map(m => m.score))}. Qualified through to the CIF North Coast Section Division I Championship.`,
     },
     {
       kicker: "ACADEMICS",
@@ -665,6 +757,7 @@ renderHero();
 renderQuickLinks();
 renderResults();
 renderSchedule();
+renderMatches();
 renderProfile();
 renderHighlights();
 renderVideos();
