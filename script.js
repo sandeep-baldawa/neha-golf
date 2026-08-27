@@ -159,10 +159,10 @@ const matchSeason = {
 const schedule = [
   {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
   {date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
-  {date:"Sep 20, 2026", event:"Peninsula Fall Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course", status:"Registered"},
-  {date:"Sep 27, 2026", event:"Peninsula Fall Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course", status:"Registered"},
-  {date:"Oct 3, 2026", event:"Peninsula Fall Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
-  {date:"Oct 4, 2026", event:"Peninsula Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
+  {date:"Sep 19–20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
+  {date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
+  {date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
   {date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
 ];
