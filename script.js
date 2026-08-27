@@ -156,10 +156,15 @@ const matchSeason = {
   window: "2025–2026 seasons",
 };
 
+/* One entry per event. U.S. Kids local-tour stops are separate one-day events
+   with their own registration and deadlines, so two stops at the same course on
+   back-to-back days are two rows, not one date range. Only genuine multi-day
+   tournaments (the JGANC events below) use a date range. */
 const schedule = [
   {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
   {date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
-  {date:"Sep 19–20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
   {date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
