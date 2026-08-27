@@ -53,6 +53,10 @@ const config = {
    Tournament results. Newest anywhere in the list is fine — they get sorted.
    Optional fields: tees, yardage, finish, par. Leave out what you do not know;
    the table prints a dash rather than a guess.
+   `par` is the 18-hole course par. When present, the score cell also shows the
+   round to par. Only add it where you have confirmed the number — a 77 on a
+   par 63 and a 77 on a par 72 are very different rounds, and guessing here is
+   worse than leaving it blank.
    A trailing "*" on a score marks an incomplete round: shown in the table,
    excluded from every average and chart.
    ========================================================================== */
@@ -79,7 +83,7 @@ const results = [
   {date:"2025-11-09", event:"Fairfield Junior Series #4 — Paradise Valley", tour:"JGANC", score:"87", notes:"Round 2"},
   {date:"2025-11-08", event:"Fairfield Junior Series #4 — Paradise Valley", tour:"JGANC", score:"86", notes:"Round 1"},
   {date:"2025-11-03", event:"NCS Division I Championship — Windsor", tour:"High school", score:"77", notes:"CIF North Coast Section postseason"},
-  {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High school", score:"77", notes:"Career-low tournament round"},
+  {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High school", score:"77", par:63, notes:"Par-63 layout — eleven par 3s"},
   {date:"2025-09-07", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"95", notes:"Round 2"},
   {date:"2025-09-06", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"91", notes:"Round 1"},
   {date:"2025-08-24", event:"Fairfield Junior Series #3 — Rancho Solano", tour:"JGANC", score:"81", notes:"Round 2"},
@@ -138,6 +142,7 @@ const results = [
    ========================================================================== */
 
 const matches = [
+  {date:"2026-08-26", event:"Dublin Ranch Golf Course", score:34, par:31, tees:"White", yardage:"2109", notes:"4·4·2·3·6·3·4·4·4", verified:true},
   {date:"2025-09-28", datePrecision:"month", event:"The Bridges Golf Club", score:43, par:38, notes:"4·7·4·5·4·5·4·6·4", verified:true},
   {date:"2025-09-21", datePrecision:"month", event:"Dublin Ranch Golf Course", score:35, verified:false},
   {date:"2025-09-14", datePrecision:"month", event:"Crow Canyon Country Club", score:38, par:34, notes:"5·6·5·4·4·3·4·3·4", verified:true},
@@ -147,8 +152,8 @@ const matches = [
 matches.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 
 const matchSeason = {
-  label: "Fall 2025 EBAL season",
-  window: "August–September 2025",
+  label: "High school match play",
+  window: "2025–2026 seasons",
 };
 
 const schedule = [
@@ -302,6 +307,20 @@ function renderQuickLinks() {
    Results table + CSV export
    ========================================================================== */
 
+const toPar = r => {
+  const n = numericScore(r.score);
+  return Number.isFinite(r.par) && Number.isFinite(n) && !String(r.score).includes("*")
+    ? n - r.par
+    : null;
+};
+
+const toParText = v => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
+
+const toParBadge = r => {
+  const v = toPar(r);
+  return v === null ? "" : `<span class="to-par">${esc(toParText(v))}</span>`;
+};
+
 let activeFilter = "all";
 
 function renderResults(filter = activeFilter) {
@@ -324,7 +343,7 @@ function renderResults(filter = activeFilter) {
         <td><strong>${esc(r.event)}</strong></td>
         <td>${esc(r.tour)}</td>
         <td class="cell-muted">${esc(tees) || "—"}</td>
-        <td class="score">${esc(r.score)}</td>
+        <td class="score">${esc(r.score)}${toParBadge(r)}</td>
         <td>${r.finish ? `<span class="finish">${esc(r.finish)}</span>` : "—"}</td>
         <td class="cell-muted">${esc(r.notes) || "—"}</td>
       </tr>`;
@@ -338,10 +357,13 @@ function renderResults(filter = activeFilter) {
 }
 
 function downloadCsv() {
-  const header = ["Date", "Event", "Tour", "Tees", "Yardage", "Score", "Finish", "Notes"];
+  const header = ["Date", "Event", "Tour", "Tees", "Yardage", "Score", "Par", "To par", "Finish", "Notes"];
   const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const lines = [header.join(",")].concat(
-    allRounds.map(r => [r.date, r.event, r.tour, r.tees, r.yardage, r.score, r.finish, r.notes].map(cell).join(","))
+    allRounds.map(r => {
+      const v = toPar(r);
+      return [r.date, r.event, r.tour, r.tees, r.yardage, r.score, r.par, v === null ? "" : toParText(v), r.finish, r.notes].map(cell).join(",");
+    })
   );
   const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -433,7 +455,7 @@ function renderMatches() {
           : `${prettyMonth(dated[0])} to ${prettyMonth(dated[dated.length - 1])}`)
       : `${prettyDate(dated[0])} to ${prettyDate(dated[dated.length - 1])}`;
   setText("matchIntro",
-    `${matches.length} nine-hole EBAL matches, ${span}, averaging ${mean(scores).toFixed(1)}. ` +
+    `${matches.length} nine-hole high school matches, ${span}, averaging ${mean(scores).toFixed(1)}. ` +
     `Nine-hole scores are excluded from every 18-hole average and chart on this page.`);
 
   $("matchBody").innerHTML = matches.map(m => {
@@ -443,6 +465,7 @@ function renderMatches() {
       <tr>
         <td class="cell-date">${esc(matchDate(m))}</td>
         <td><strong>${esc(m.event)}</strong></td>
+        <td class="cell-muted">${esc([m.tees, m.yardage ? m.yardage + " yds" : ""].filter(Boolean).join(" • ")) || "—"}</td>
         <td class="score">${esc(m.score)}</td>
         <td class="cell-muted">${Number.isFinite(m.par) ? esc(m.par) : "—"}</td>
         <td><span class="finish">${esc(toParText)}</span></td>
@@ -478,12 +501,12 @@ function renderHighlights() {
     {
       kicker: "CAREER LOW",
       value: String(stats.careerLow),
-      body: "EBAL Championship at Dublin Ranch, Oct. 1 2025, and again at the NCS Division I Championship a month later.",
+      body: "NCS Division I Championship at Windsor, Nov. 3 2025 — full-length postseason course. She also shot 77 at the EBAL Championship a month earlier, on Dublin Ranch's par-63 layout.",
     },
     {
       kicker: "HIGH SCHOOL",
       value: "EBAL All-League",
-      body: `2025 season. ${matches.length} nine-hole EBAL matches averaging ${mean(matches.map(m => m.score)).toFixed(1)}, low ${Math.min(...matches.map(m => m.score))}. Qualified through to the CIF North Coast Section Division I Championship.`,
+      body: `EBAL All-League in 2025, and through to the CIF North Coast Section Division I Championship. ${matches.length} nine-hole matches on record averaging ${mean(matches.map(m => m.score)).toFixed(1)}, low ${Math.min(...matches.map(m => m.score))}.`,
     },
     {
       kicker: "ACADEMICS",
@@ -562,8 +585,11 @@ function drawScoreChart(containerId, rounds, options = {}) {
   const container = $(containerId);
   if (!container || !rounds.length) return;
 
-  const width = 1040;
-  const height = options.height || 390;
+  // On a phone the SVG is scaled down to fit, so a wide viewBox would render
+  // 12px labels at ~4px. A narrower box means less downscaling.
+  const narrow = typeof window !== "undefined" && window.innerWidth < 700;
+  const width = narrow ? 620 : 1040;
+  const height = options.height || (narrow ? 440 : 390);
   const pad = { top: 28, right: 28, bottom: 76, left: 58 };
   const plotW = width - pad.left - pad.right;
   const plotH = height - pad.top - pad.bottom;
@@ -593,9 +619,8 @@ function drawScoreChart(containerId, rounds, options = {}) {
     const yy = y(benchmark);
     const isPrimary = benchmark === 80;
     svg += `<line x1="${pad.left}" x2="${width - pad.right}" y1="${yy}" y2="${yy}" stroke="#1f6a43" stroke-width="1.3" stroke-dasharray="${isPrimary ? "6 6" : "3 6"}" opacity="${isPrimary ? ".55" : ".22"}"/>`;
-    if (isPrimary) {
-      svg += `<text x="${width - pad.right}" y="${yy - 7}" text-anchor="end" font-size="11" font-weight="700" fill="#1f6a43">80 benchmark</text>`;
-    }
+    // No inline label: at some data shapes it lands on top of the points.
+    // The dashed line is identified in the chart legend instead.
   });
 
   if (options.showYears) {
@@ -628,7 +653,7 @@ function drawScoreChart(containerId, rounds, options = {}) {
     const xx = x(i);
     const yy = y(r.value);
     const tip = `${r.value} at ${r.event}, ${prettyDate(r.date)}, ${r.tour}`;
-    svg += `<circle class="score-point" data-index="${i}" cx="${xx}" cy="${yy}" r="5.5" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0" role="img" aria-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
+    svg += `<circle class="score-point" data-index="${i}" cx="${xx}" cy="${yy}" r="${narrow ? 7 : 5.5}" fill="#1f6a43" stroke="#ffffff" stroke-width="2.5" tabindex="0" role="img" aria-label="${esc(tip)}"><title>${esc(tip)}</title></circle>`;
 
     if (!options.showYears && (i === 0 || i === rounds.length - 1)) {
       svg += `<text x="${xx}" y="${height - 30}" text-anchor="middle" font-size="12" font-weight="700" fill="#66706a">${i === 0 ? "Earlier" : "Latest"}</text>`;
@@ -753,14 +778,34 @@ document.querySelectorAll(".filter").forEach(btn => {
 
 $("downloadCsv").addEventListener("click", downloadCsv);
 
-renderHero();
-renderQuickLinks();
-renderResults();
-renderSchedule();
-renderMatches();
-renderProfile();
-renderHighlights();
-renderVideos();
-renderContact();
-renderCharts();
-renderSetupBanner();
+/* Each section renders independently. Without this, one bad row anywhere would
+   blank every section after it — which is how the charts went missing once. */
+[
+  ["hero", renderHero],
+  ["quick links", renderQuickLinks],
+  ["results", renderResults],
+  ["schedule", renderSchedule],
+  ["matches", renderMatches],
+  ["profile", renderProfile],
+  ["highlights", renderHighlights],
+  ["videos", renderVideos],
+  ["contact", renderContact],
+  ["charts", renderCharts],
+  ["setup banner", renderSetupBanner],
+].forEach(([name, fn]) => {
+  try {
+    fn();
+  } catch (err) {
+    console.error(`Failed to render ${name}:`, err);
+  }
+});
+
+let resizeTimer;
+let lastNarrow = window.innerWidth < 700;
+window.addEventListener("resize", () => {
+  const nowNarrow = window.innerWidth < 700;
+  if (nowNarrow === lastNarrow) return;
+  lastNarrow = nowNarrow;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderCharts, 150);
+});

@@ -49,8 +49,9 @@ does not. Each row therefore carries `datePrecision:"month"`, so the page prints
 only "Sep 2025" while still using the full date to sort. Nothing on the site
 claims a day it cannot support.
 
-The underlying values are Ruby Hill 09-09, Crow Canyon 09-14, Dublin Ranch
-09-21, Bridges 09-28. If you confirm a real match date, replace it and delete
+The 2026-08-26 round at Dublin Ranch is an exact date read off the card, so it
+carries no `datePrecision` and displays in full. The 2025 values are Ruby Hill
+09-09, Crow Canyon 09-14, Dublin Ranch 09-21, Bridges 09-28. If you confirm a real match date, replace it and delete
 that row's `datePrecision` key — the exact date will then display.
 
 `date` is optional on a match row. A row without one still renders and still
@@ -73,6 +74,21 @@ Hill have no `par` recorded, so their over-par column prints a dash.
 
 The site now shows **57 counting rounds**. It previously showed 61 rows, which
 inflated the round count and skewed every average.
+
+## Course par is optional and shown inline
+
+An 18-hole round may carry a `par`. When it does, the score cell shows the round
+to par underneath the score; when it doesn't, the cell looks exactly as before.
+No column of dashes.
+
+Only one round currently has it: the EBAL Championship 77 at Dublin Ranch, which
+is a **par 63** — eleven par 3s, five par 4s, two par 5s, 5,079 yards from the
+tips. That 77 is therefore +14, while the 77 at NCS Windsor a month later was on
+a full-length course. The two are not equivalent rounds, and the career-low
+highlight card now leads with Windsor for that reason.
+
+Add `par` to other rounds as you confirm each course's number. Do not guess it —
+a wrong par is worse than no par, because it silently misrepresents the round.
 
 ## Adding a round by hand
 
@@ -124,8 +140,19 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-26e`. Anything else — or no output at all —
+The current build is `2026-08-26h`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
+
+## If a section of the page looks empty
+
+Each section renders inside its own try/catch, so one bad data row can only
+blank that section rather than everything after it. Open the browser console —
+a failure logs as `Failed to render <section>:` with the underlying error.
+
+The charts scale to their container via the SVG viewBox. They do not use a fixed
+pixel width, and there is no horizontal scroll. On screens under 700px wide they
+switch to a narrower, taller viewBox so the axis labels stay legible after
+downscaling, and they redraw on rotation.
 
 ## Publishing
 

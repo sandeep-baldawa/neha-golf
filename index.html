@@ -8,7 +8,7 @@
   <meta name="description" content="Neha Baldawa — Class of 2028 junior golfer, Foothill High School (Pleasanton, CA). Tournament scoring average down from 107.3 in 2024 to 84.4 in 2026. Career low 77." />
   <meta name="author" content="Neha Baldawa" />
   <meta name="robots" content="index, follow" />
-  <meta name="build" content="2026-08-26a" />
+  <meta name="build" content="2026-08-26h" />
   <link rel="canonical" href="https://nehabaldawa.com/" />
 
   <!-- Link previews. Coaches receive this URL by email and text; without these the preview is blank. -->
@@ -26,7 +26,7 @@
   <meta name="theme-color" content="#1f6a43" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2315231b'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial,sans-serif' font-size='15' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3ENB%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="styles.css?v=2026-08-26a" />
+  <link rel="stylesheet" href="styles.css?v=2026-08-26h" />
 
   <script type="application/ld+json">
   {
@@ -52,6 +52,7 @@
       <a href="#results">Results</a>
       <a href="#progress">Progress</a>
       <a href="#highlights">Highlights</a>
+      <a href="#matches" data-nav="matches">High school</a>
       <a href="#schedule">Schedule</a>
       <a href="#profile">Profile</a>
       <a href="#academics">Academics</a>
@@ -144,7 +145,7 @@
       </noscript>
 
       <p class="footnote">
-        A score marked with an asterisk was not completed and is excluded from every average and chart on this page.
+        A score marked with an asterisk was not completed and is excluded from every average and chart on this page. Where a course par is on record, the round to par is shown beneath the score.
       </p>
     </section>
 
@@ -171,6 +172,7 @@
           <div class="chart-legend">
             <span><i class="legend-dot"></i> Round</span>
             <span><i class="legend-line"></i> 5-round average</span>
+            <span><i class="legend-benchmark"></i> 80 benchmark</span>
           </div>
         </div>
         <div id="scoreChart" class="score-chart"></div>
@@ -208,6 +210,40 @@
         </div>
       </div>
       <div class="highlight-grid" id="highlightGrid"></div>
+    </section>
+
+    <section class="section" id="matches" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">HIGH SCHOOL — 9 HOLES</p>
+          <h2>High school match play</h2>
+          <p class="section-intro" id="matchIntro"></p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="match-table">
+          <caption class="visually-hidden">Nine-hole high school match scores with par and score to par</caption>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Course</th>
+              <th scope="col">Tees</th>
+              <th scope="col">Score</th>
+              <th scope="col">Par</th>
+              <th scope="col">To par</th>
+              <th scope="col">Hole by hole</th>
+            </tr>
+          </thead>
+          <tbody id="matchBody"></tbody>
+        </table>
+      </div>
+
+      <div class="progress-stats match-stats">
+        <div class="progress-stat"><span class="progress-value" id="matchAvg">—</span><span class="progress-label">9-hole match average</span></div>
+        <div class="progress-stat"><span class="progress-value" id="matchLow">—</span><span class="progress-label">Low 9-hole match</span></div>
+        <div class="progress-stat" id="matchBestParStat"><span class="progress-value" id="matchBestPar">—</span><span class="progress-label" id="matchBestParLabel">Best round vs. par</span></div>
+      </div>
     </section>
 
     <section class="section" id="schedule">
@@ -283,9 +319,9 @@
 
   <footer>
     <p>Neha Baldawa • Class of 2028 • Junior golf recruiting profile</p>
-    <p>Last round logged <span id="lastUpdated">—</span> • Results checked daily • Build 2026-08-26a</p>
+    <p>Last round logged <span id="lastUpdated">—</span> • Results checked daily • Build 2026-08-26h</p>
   </footer>
 
-  <script src="script.js?v=2026-08-26a"></script>
+  <script src="script.js?v=2026-08-26h"></script>
 </body>
 </html>
