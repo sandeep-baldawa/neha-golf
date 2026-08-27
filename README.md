@@ -84,7 +84,30 @@ that context.
 School name and city are published. That is a judgment call worth revisiting as
 a family; a coach can find the school from any tournament result anyway.
 
+## Build stamp — how to tell which version is live
+
+`index.html` carries a build id in three places: a `<meta name="build">` tag,
+the footer, and a `?v=` query on the CSS and JS links. Bump all four
+occurrences whenever you deploy something you need to confirm went out.
+
+The `?v=` query matters most: without it, a browser that already has
+`script.js` cached will keep running the old one even after the new HTML
+lands, which looks exactly like a failed deploy.
+
+To check what is actually being served, ignoring every cache in between:
+
+```
+curl -s https://nehabaldawa.com/ | grep 'name="build"'
+```
+
+The current build is `2026-08-26a`. Anything else — or no output at all —
+means the deploy has not reached the origin yet.
+
 ## Publishing
 
 GitHub Pages is already configured via `CNAME`. Netlify, Vercel and Cloudflare
 Pages all work with no configuration — there is nothing to build.
+
+If a push does not appear on the live site, check in this order:
+Settings → Pages source, then the "pages build and deployment" run in the
+Actions tab, then any CDN sitting in front of the domain.

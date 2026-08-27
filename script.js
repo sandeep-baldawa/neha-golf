@@ -10,7 +10,7 @@
 
 const config = {
   // --- Required before sharing the URL with any coach ---------------------
-  recruitingEmail: "",          // e.g. "neha.golf@example.com" — a parent-monitored address
+  recruitingEmail: "nehabaldawa2020@gmail.com",   // parent-monitored
   emailOwner: "parent-monitored inbox",
 
   // --- Optional. Each one appears only once it has a value ----------------
