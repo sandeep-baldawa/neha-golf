@@ -125,6 +125,22 @@ table and is excluded from every average and chart.
 5,900 read very differently to a coach, and right now only two rounds carry
 that context.
 
+## U.S. Kids priority status and tour finishes
+
+`config.priorityStatus` and `config.tourFinishes` drive two highlight cards and
+one profile row. Set `priorityStatus.level` to `""` to hide the card.
+
+`config.priorityStatusUrl` is intentionally empty. Her status is listed on
+juniorgolfstatus.com, but that is a third-party lookup site that wraps a minor's
+profile in coach-referral listings, an AI product upsell and an "Add to
+Watchlist" button. Only put an official U.S. Kids Golf player URL here.
+
+Open question: the Level 8 status came from a 1st place on the Peninsula Local
+Tour in Fall 2025, but the results log has no U.S. Kids rounds in that window.
+Few events were played that season, so the standing may rest on a small number
+of starts. If any Fall 2025 U.S. Kids rounds are missing from `results`, add
+them — a coach reading "1st place, Peninsula Fall 2025" will look for them.
+
 ## Things deliberately left off the page
 
 - **The JGS rank number.** A rank in the thousands argues against her; the
@@ -155,7 +171,7 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-27c`. Anything else — or no output at all —
+The current build is `2026-08-27e`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
 
 ## If a section of the page looks empty

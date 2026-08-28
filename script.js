@@ -42,6 +42,27 @@ const config = {
   // { title: "Driver, face-on and down-the-line", url: "https://youtu.be/…", note: "Recorded Aug 2026" }
   videos: [],
 
+  // --- U.S. Kids Golf priority status -------------------------------------
+  // Set level to "" to hide the card entirely.
+  priorityStatus: {
+    level: "8",
+    division: "Girls 15-18",
+    valid: "Mar 2026 – Feb 2027",
+    // The finish that earned it is listed under tourFinishes below.
+  },
+
+  // Season-long local tour finishes. Newest first.
+  tourFinishes: [
+    {finish: "1st", tour: "Peninsula Local Tour", season: "Fall 2025", division: "Girls 15-18"},
+    {finish: "2nd", tour: "San Francisco Local Tour", season: "Spring 2025", division: "Girls 15-18"},
+  ],
+
+  // Deliberately empty. The juniorgolfstatus.com lookup page carries her status,
+  // but it is a third-party site that wraps a minor's profile in coach-referral
+  // listings, an AI upsell and a "watchlist" button. Only fill this in with an
+  // official U.S. Kids Golf player URL.
+  priorityStatusUrl: "",
+
   // --- Publish the JGS rank number? ---------------------------------------
   // Off by default. A rank in the thousands argues against her; the profile
   // link lets a coach look it up if they want it.
@@ -298,6 +319,7 @@ function renderQuickLinks() {
     { url: config.jgsProfileUrl, label: "Junior Golf Scoreboard", sub: "Open JGS profile ↗" },
     { url: config.tugrProfileUrl, label: "TUGR rankings", sub: "Open TUGR profile ↗" },
     { url: config.ncsaProfileUrl, label: "NCSA profile", sub: "Open NCSA ↗" },
+    { url: config.priorityStatusUrl, label: "U.S. Kids priority status", sub: "Verify status ↗" },
     { url: config.swingVideoUrl, label: "Swing video", sub: "Watch ↗" },
     { url: config.resumeUrl, label: "Golf resume", sub: "Download PDF ↗" },
   ].filter(link => link.url);
@@ -421,6 +443,9 @@ function renderProfile() {
     ["Height", config.heightFtIn],
     ["Driver carry", config.driverCarryYds ? `${config.driverCarryYds} yds` : ""],
     ["Primary tours", config.tours],
+    ["U.S. Kids priority status", config.priorityStatus && config.priorityStatus.level
+      ? `Level ${config.priorityStatus.level} (${config.priorityStatus.division})`
+      : ""],
     ["Scoring average, last 10", mean(stats.last10).toFixed(1)],
     ["Rounds logged", `${stats.total} tournament rounds since ${stats.seasons[0]}`],
   ]);
@@ -530,6 +555,26 @@ function renderHighlights() {
       body: "In progress with Kukkiwon certification. First degree earned September 2024.",
     },
   ];
+
+  const ps = config.priorityStatus;
+  if (ps && ps.level) {
+    cards.unshift({
+      kicker: "U.S. KIDS GOLF PRIORITY STATUS",
+      value: `Level ${ps.level}`,
+      body: `${ps.division}, valid ${ps.valid}.`,
+    });
+  }
+
+  if (config.tourFinishes && config.tourFinishes.length) {
+    const f = config.tourFinishes;
+    const divisions = [...new Set(f.map(x => x.division))];
+    cards.splice(1, 0, {
+      kicker: "SEASON TOUR FINISHES",
+      value: f.map(x => x.finish).join(" & "),
+      body: f.map(x => `${x.finish} on the ${x.tour}, ${x.season}`).join(". ") +
+        (divisions.length === 1 ? `. Both in ${divisions[0]}.` : "."),
+    });
+  }
 
   if (config.showJgsRankNumber && config.jgsRankNumber) {
     cards.push({
