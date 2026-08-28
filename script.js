@@ -681,7 +681,7 @@ function renderContact() {
     `<a class="button primary" href="mailto:${esc(config.recruitingEmail)}">${esc(config.recruitingEmail)}</a>` +
     (config.resumeUrl ? `<a class="button secondary" href="${esc(config.resumeUrl)}" target="_blank" rel="noopener">Golf resume (PDF)</a>` : "");
   setText("contactCompliance",
-    "NCAA Division I coaches may contact class-of-2028 prospects directly as of June 15, 2026.");
+    "College coaches at any level are welcome to get in touch.");
 }
 
 /* ==========================================================================
