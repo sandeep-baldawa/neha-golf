@@ -587,6 +587,11 @@ function renderHighlights() {
       body: `EBAL All-League in 2025, and through to the CIF North Coast Section Division I Championship. ${matches.length} nine-hole matches on record averaging ${mean(matches.map(m => m.score)).toFixed(1)}, low ${Math.min(...matches.map(m => m.score))}.`,
     },
     {
+      kicker: "SCHOOL HONORS",
+      value: "Athlete of the Month",
+      body: "Named a Foothill Athletic Booster Athlete of the Month, November 2025 — a school-wide award across fall sports.",
+    },
+    {
       kicker: "ACADEMICS",
       value: `${config.gpaUnweighted} GPA`,
       body: `SAT ${config.sat}. CIF North Coast Section President's List, 2025–26.`,
