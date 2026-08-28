@@ -143,6 +143,7 @@ const results = [
   {date:"2025-04-13", event:"Diablo Creek", tour:"JGANC", score:"90", notes:""},
   {date:"2025-03-30", event:"Shoreline Golf Links", tour:"JGANC", score:"104", notes:""},
   {date:"2025-03-23", event:"Blue Rock Springs West", tour:"JGANC", score:"96", notes:""},
+  {date:"2025-02-02", event:"Teen Series — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"108", par:72, finish:"28th", notes:"Round 2 of a 27-hole event • Girls 13-18 • round 1 was a 9-hole 51"},
   {date:"2025-03-15", event:"Las Positas", tour:"JGANC", score:"89", notes:""},
   {date:"2024-10-28", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"104", notes:"Round 2"},
   {date:"2024-10-27", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"105", notes:"Round 1"},
