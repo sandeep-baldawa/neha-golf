@@ -9,8 +9,8 @@
 
 const config = {
   // --- Contact ------------------------------------------------------------
-  recruitingEmail: "",          // e.g. "neha.golf@example.com" — a parent-monitored address
-  emailOwner: "parent-monitored inbox",
+  recruitingEmail: "nehabaldawa2020@gmail.com",
+  emailOwner: "family-monitored inbox",
 
   // --- Optional. Each one appears only once it has a value ----------------
   swingVideoUrl: "",            // unlisted YouTube link is fine
