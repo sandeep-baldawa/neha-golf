@@ -161,16 +161,22 @@ const matchSeason = {
    back-to-back days are two rows, not one date range. Only genuine multi-day
    tournaments (the JGANC events below) use a date range. */
 const schedule = [
-  {date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
-  {date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
-  {date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
-  {date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
-  {date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
-  {date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
-  {date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
-  {date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
-  {date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
+  {sortDate:"2026-09-05", date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
+  {sortDate:"2026-09-12", date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
+  {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {sortDate:"2026-09-20", date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {sortDate:"2026-09-27", date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
+  {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
+  {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
+  {sortDate:"2026-10-10", date:"Oct 10, 2026", event:"Peninsula Fall Local Tour", tour:"U.S. Kids Golf", venue:"Shoreline Golf Links, Mountain View", status:"Registered"},
+  {sortDate:"2026-10-24", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
+  {sortDate:"2026-11-07", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
 ];
+
+/* Sorted by sortDate (the first day of the event) so a new entry can be pasted
+   anywhere in the list above and still land in the right place. `date` is the
+   display string; `sortDate` is never shown. */
+schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
 
 /* ==========================================================================
    Helpers

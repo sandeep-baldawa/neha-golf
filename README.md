@@ -90,6 +90,21 @@ highlight card now leads with Windsor for that reason.
 Add `par` to other rounds as you confirm each course's number. Do not guess it —
 a wrong par is worse than no par, because it silently misrepresents the round.
 
+## Adding an upcoming event
+
+`schedule` in `script.js`. Each entry has a `sortDate` (ISO, the first day of
+the event) and a `date` (the display string). The list sorts itself by
+`sortDate`, so paste a new entry anywhere:
+
+```js
+{sortDate:"2026-10-10", date:"Oct 10, 2026", event:"Peninsula Fall Local Tour",
+ tour:"U.S. Kids Golf", venue:"Shoreline Golf Links, Mountain View", status:"Registered"},
+```
+
+One entry per event. U.S. Kids local-tour stops on back-to-back days are
+separate events with their own registrations, so they get separate rows; only
+genuine multi-day tournaments use a date range in `date`.
+
 ## Adding a round by hand
 
 Add an object anywhere in the `results` array in `script.js` — sort order is
@@ -140,7 +155,7 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-26h`. Anything else — or no output at all —
+The current build is `2026-08-27c`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
 
 ## If a section of the page looks empty
