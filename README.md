@@ -185,6 +185,40 @@ pixel width, and there is no horizontal scroll. On screens under 700px wide they
 switch to a narrower, taller viewBox so the axis labels stay legible after
 downscaling, and they redraw on rotation.
 
+## Tournament reminder emails
+
+`.github/workflows/event-reminders.yml` runs `scripts/send-reminders.py` daily
+at 15:00 UTC (about 8:00 AM Pacific) and emails a reminder when an event is a
+few days out. It reads the same `schedule` array the site renders, so adding an
+event to the site schedules its reminder too.
+
+Set these as repository secrets (Settings -> Secrets and variables -> Actions):
+
+| Secret | Value |
+| --- | --- |
+| `MAIL_SERVER` | `smtp.gmail.com` |
+| `MAIL_PORT` | `587` |
+| `MAIL_USERNAME` | the sending Gmail address |
+| `MAIL_PASSWORD` | a Gmail **app password**, not the account password |
+| `MAIL_TO` | `sandeepbaldawa@gmail.com,ruchita.rathi@gmail.com,nehabaldawa2020@gmail.com` |
+
+Recipients live in the secret, not in the code. This repository is public, and
+committed email addresses get harvested by scrapers.
+
+A Gmail app password requires 2-Step Verification on the account, then
+Google Account -> Security -> App passwords. Never commit it.
+
+Lead times default to **3 days and 1 day** before each event. To change that,
+add a repository **variable** (not a secret) named `LEAD_DAYS` — for example
+`5,2,1`.
+
+To test without sending anything, run it locally with no credentials set — it
+prints the email it would have sent instead:
+
+```
+python3 scripts/send-reminders.py
+```
+
 ## Publishing
 
 GitHub Pages is already configured via `CNAME`. Netlify, Vercel and Cloudflare
