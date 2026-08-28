@@ -19,6 +19,11 @@ const config = {
   tugrProfileUrl: "https://www.tugr.org/",
   ncsaProfileUrl: "",
 
+  // Press coverage. Each entry appears in the verification links row.
+  press: [
+    {label: "NCS girls' golf, 2025", url: "", source: "Pleasanton Weekly"},
+  ],
+
   // --- Player facts -------------------------------------------------------
   gradYear: 2028,
   school: "Foothill High School",
@@ -107,7 +112,7 @@ const results = [
   {date:"2025-11-09", event:"Fairfield Junior Series #4 — Paradise Valley", tour:"JGANC", score:"87", notes:"Round 2"},
   {date:"2025-11-08", event:"Fairfield Junior Series #4 — Paradise Valley", tour:"JGANC", score:"86", notes:"Round 1"},
   {date:"2025-10-25", event:"Peninsula Local Tour — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"80", par:72, finish:"1st", notes:"Girls 15-18"},
-  {date:"2025-11-03", event:"NCS Division I Championship — Windsor", tour:"High school", score:"77", notes:"CIF North Coast Section postseason"},
+  {date:"2025-11-03", event:"NCS Division I Championship", tour:"High school", score:"77", notes:"Low score for Foothill by 13 strokes • team 446 • 5 off the individual winner"},
   {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High school", score:"77", par:63, notes:"Par-63 layout — eleven par 3s"},
   {date:"2025-09-07", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"95", notes:"Round 2"},
   {date:"2025-09-06", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"91", notes:"Round 1"},
@@ -346,6 +351,7 @@ function renderQuickLinks() {
     { url: config.tugrProfileUrl, label: "TUGR rankings", sub: "Open TUGR profile ↗" },
     { url: config.ncsaProfileUrl, label: "NCSA profile", sub: "Open NCSA ↗" },
     { url: config.priorityStatusUrl, label: "U.S. Kids priority status", sub: "Verify status ↗" },
+    ...(config.press || []).filter(p => p.url).map(p => ({ url: p.url, label: p.label, sub: `${p.source} ↗` })),
     { url: config.swingVideoUrl, label: "Swing video", sub: "Watch ↗" },
     { url: config.resumeUrl, label: "Golf resume", sub: "Download PDF ↗" },
   ].filter(link => link.url);
