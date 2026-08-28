@@ -58,9 +58,9 @@ that row's `datePrecision` key — the exact date will then display.
 counts toward the match average; it just prints a dash in the date column.
 
 Two of the four scores came from spreadsheet tab names rather than a scorecard
-and are marked `verified:false`. That flag is informational only — it does not
-affect the page and the checklist does not nag about it. Dublin Ranch and Ruby
-Hill have no `par` recorded, so their over-par column prints a dash.
+and are marked `verified:false`. The flag is informational and does not affect
+the page. Dublin Ranch and Ruby Hill have no `par` recorded, so their over-par
+column prints a dash.
 
 ## Rounds needing verification against official results
 
@@ -81,14 +81,11 @@ An 18-hole round may carry a `par`. When it does, the score cell shows the round
 to par underneath the score; when it doesn't, the cell looks exactly as before.
 No column of dashes.
 
-Only one round currently has it: the EBAL Championship 77 at Dublin Ranch, which
-is a **par 63** — eleven par 3s, five par 4s, two par 5s, 5,079 yards from the
-tips. That 77 is therefore +14, while the 77 at NCS Windsor a month later was on
-a full-length course. The two are not equivalent rounds, and the career-low
-highlight card now leads with Windsor for that reason.
+Only one round currently has it: the EBAL Championship 77 at Dublin Ranch, a
+**par 63** (5,079 yards from the tips), which makes that round +14.
 
-Add `par` to other rounds as you confirm each course's number. Do not guess it —
-a wrong par is worse than no par, because it silently misrepresents the round.
+Add `par` to other rounds as each course's number is confirmed. Leave it out
+rather than guessing.
 
 ## Adding an upcoming event
 
@@ -104,6 +101,13 @@ the event) and a `date` (the display string). The list sorts itself by
 One entry per event. U.S. Kids local-tour stops on back-to-back days are
 separate events with their own registrations, so they get separate rows; only
 genuine multi-day tournaments use a date range in `date`.
+
+`config.showLeagueMatches` set to `false` hides the EBAL league matches, leaving
+only tournaments and championships.
+
+The CIF postseason rows are date windows rather than fixed dates. The NCS site
+and date are set at the seeding meeting; NorCal and State depend on advancing.
+Replace the window with the real date once each is known.
 
 ## Adding a round by hand
 
@@ -130,22 +134,22 @@ that context.
 `config.priorityStatus` and `config.tourFinishes` drive two highlight cards and
 one profile row. Set `priorityStatus.level` to `""` to hide the card.
 
-`config.priorityStatusUrl` is intentionally empty. Her status is listed on
-juniorgolfstatus.com, but that is a third-party lookup site that wraps a minor's
-profile in coach-referral listings, an AI product upsell and an "Add to
-Watchlist" button. Only put an official U.S. Kids Golf player URL here.
+`config.priorityStatusUrl` takes an official U.S. Kids Golf player URL. It is
+left empty rather than pointing at a third-party lookup site.
 
-Open question: the Level 8 status came from a 1st place on the Peninsula Local
-Tour in Fall 2025, but the results log has no U.S. Kids rounds in that window.
-Few events were played that season, so the standing may rest on a small number
-of starts. If any Fall 2025 U.S. Kids rounds are missing from `results`, add
-them — a coach reading "1st place, Peninsula Fall 2025" will look for them.
+If any Fall 2025 U.S. Kids rounds are missing from `results`, add them.
+
+## The development-focus copy
+
+Rendered by `renderDevelopmentFocus()` in `script.js`.
+
+`config.mentionInjury` toggles the sentence about the wrist injury on or off.
+Everything else in the section is unchanged either way.
 
 ## Things deliberately left off the page
 
-- **The JGS rank number.** A rank in the thousands argues against her; the
-  linked profile lets a coach look it up if they want it. Set
-  `config.showJgsRankNumber = true` to publish it.
+- **The JGS rank number.** The linked profile carries the current ranking.
+  Set `config.showJgsRankNumber = true` to publish the number itself.
 - **Advisor names for the ISEF project.** The academics section describes two
   university biomechanics faculty advisors without naming them. Add names only
   with their permission.
@@ -171,7 +175,7 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-27e`. Anything else — or no output at all —
+The current build is `2026-08-27i`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
 
 ## If a section of the page looks empty
@@ -202,8 +206,8 @@ Set these as repository secrets (Settings -> Secrets and variables -> Actions):
 | `MAIL_PASSWORD` | a Gmail **app password**, not the account password |
 | `MAIL_TO` | `sandeepbaldawa@gmail.com,ruchita.rathi@gmail.com,nehabaldawa2020@gmail.com` |
 
-Recipients live in the secret, not in the code. This repository is public, and
-committed email addresses get harvested by scrapers.
+Recipients live in the secret rather than in the code, since this repository is
+public.
 
 A Gmail app password requires 2-Step Verification on the account, then
 Google Account -> Security -> App passwords. Never commit it.

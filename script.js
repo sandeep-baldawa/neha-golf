@@ -2,14 +2,13 @@
    Neha Baldawa — junior golf recruiting profile
    --------------------------------------------------------------------------
    EDIT THIS BLOCK, NOT THE MARKUP.
-   Anything left as an empty string hides its section instead of showing a
-   placeholder. A half-finished section is worse than a missing one, because
-   a coach reads it as a family that started something and stopped.
-   Run the page from a local file or localhost to see the setup checklist.
+   Anything left as an empty string hides its section rather than showing a
+   placeholder. Run the page from a local file or localhost to see which
+   fields are still unset.
    ========================================================================== */
 
 const config = {
-  // --- Required before sharing the URL with any coach ---------------------
+  // --- Contact ------------------------------------------------------------
   recruitingEmail: "",          // e.g. "neha.golf@example.com" — a parent-monitored address
   emailOwner: "parent-monitored inbox",
 
@@ -42,6 +41,14 @@ const config = {
   // { title: "Driver, face-on and down-the-line", url: "https://youtu.be/…", note: "Recorded Aug 2026" }
   videos: [],
 
+  // --- Schedule -----------------------------------------------------------
+  // false hides EBAL league matches, leaving tournaments and championships.
+  showLeagueMatches: true,
+
+  // --- Development focus copy ---------------------------------------------
+  // Toggles the wrist-injury sentence on or off.
+  mentionInjury: true,
+
   // --- U.S. Kids Golf priority status -------------------------------------
   // Set level to "" to hide the card entirely.
   priorityStatus: {
@@ -57,15 +64,11 @@ const config = {
     {finish: "2nd", tour: "San Francisco Local Tour", season: "Spring 2025", division: "Girls 15-18"},
   ],
 
-  // Deliberately empty. The juniorgolfstatus.com lookup page carries her status,
-  // but it is a third-party site that wraps a minor's profile in coach-referral
-  // listings, an AI upsell and a "watchlist" button. Only fill this in with an
-  // official U.S. Kids Golf player URL.
+  // Official U.S. Kids Golf player URL only.
   priorityStatusUrl: "",
 
   // --- Publish the JGS rank number? ---------------------------------------
-  // Off by default. A rank in the thousands argues against her; the profile
-  // link lets a coach look it up if they want it.
+  // Off by default. The linked JGS profile carries the current ranking.
   showJgsRankNumber: false,
   jgsRankNumber: "~3,240",
 };
@@ -75,9 +78,8 @@ const config = {
    Optional fields: tees, yardage, finish, par. Leave out what you do not know;
    the table prints a dash rather than a guess.
    `par` is the 18-hole course par. When present, the score cell also shows the
-   round to par. Only add it where you have confirmed the number — a 77 on a
-   par 63 and a 77 on a par 72 are very different rounds, and guessing here is
-   worse than leaving it blank.
+   round to par. Add it only where the number is confirmed; leave it out
+   otherwise.
    A trailing "*" on a score marks an incomplete round: shown in the table,
    excluded from every average and chart.
    ========================================================================== */
@@ -155,7 +157,7 @@ const results = [
    `par` is the 9-hole par for the tees played — omit it if you are unsure and
    the row prints a dash rather than a wrong number over par.
    `verified` records whether a score came from a scorecard or from the season
-   spreadsheet. It is informational only and does not affect the page.
+   spreadsheet. Informational only; it does not affect the page.
    `datePrecision:"month"` means the day is not trusted — these dates came from
    Google Photos sync times, not from the scorecards — so the page prints only
    the month while still using the full date to sort. Remove that key on any
@@ -181,18 +183,39 @@ const matchSeason = {
    with their own registration and deadlines, so two stops at the same course on
    back-to-back days are two rows, not one date range. Only genuine multi-day
    tournaments (the JGANC events below) use a date range. */
+/* League matches are tagged tour:"High school". Set config.showLeagueMatches
+   to false to hide them and leave only tournaments and championships. */
 const schedule = [
+  {sortDate:"2026-09-02", date:"Sep 2, 2026", event:"EBAL match vs. San Ramon Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-05", date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
+  {sortDate:"2026-09-09", date:"Sep 9, 2026", event:"EBAL match at California (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-12", date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
+  {sortDate:"2026-09-16", date:"Sep 16, 2026", event:"EBAL match at Granada (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-20", date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
+  {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"League match", status:"Scheduled"},
+  {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-27", date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
+  {sortDate:"2026-09-30", date:"Sep 30, 2026", event:"EBAL match vs. Monte Vista (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
+  {sortDate:"2026-10-07", date:"Oct 7, 2026", event:"EBAL match vs. Dougherty Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-10", date:"Oct 10, 2026", event:"Peninsula Fall Local Tour", tour:"U.S. Kids Golf", venue:"Shoreline Golf Links, Mountain View", status:"Registered"},
+  {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
+  {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Poppy Ridge Golf Course, Livermore — par 72, NCGA championship layout", status:"Championship"},
   {sortDate:"2026-10-24", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
+  {sortDate:"2026-10-27", date:"Oct 27 – Nov 7, 2026", event:"CIF North Coast Section Championships", tour:"High school", venue:"Site and date set at the Oct 25 seeding meeting", status:"Postseason window"},
   {sortDate:"2026-11-07", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
+  {sortDate:"2026-11-10", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
+  {sortDate:"2026-11-20", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
 ];
+
+schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
+
+/* Sorted by sortDate (the first day of the event) so a new entry can be pasted
+   anywhere in the list above and still land in the right place. `date` is the
+   display string; `sortDate` is never shown. */
+schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
    anywhere in the list above and still land in the right place. `date` is the
@@ -412,7 +435,10 @@ function downloadCsv() {
    ========================================================================== */
 
 function renderSchedule() {
-  $("scheduleGrid").innerHTML = schedule.map(item => `
+  const shown = config.showLeagueMatches
+    ? schedule
+    : schedule.filter(item => item.status !== "Scheduled");
+  $("scheduleGrid").innerHTML = shown.map(item => `
     <article class="schedule-card">
       <div class="schedule-date">${esc(item.date)}</div>
       <h3>${esc(item.event)}</h3>
@@ -431,6 +457,22 @@ function renderDetailList(id, rows) {
         <dt>${esc(label)}</dt>
         <dd>${esc(value)}${note ? `<span class="dd-note">${esc(note)}</span>` : ""}</dd>
       </div>`).join("");
+}
+
+function renderDevelopmentFocus() {
+  const el = $("developmentFocus");
+  if (!el) return;
+
+  const injury = config.mentionInjury
+    ? "She returned to competition in 2025 after six months out with a wrist injury, and has been building competitive volume back since. "
+    : "";
+
+  el.innerHTML = `
+    <p>${injury}She has been competing on the U.S. Kids local tours through 2026, winning at Coyote Creek
+      and Shoreline this August and reaching Level 8 priority status. Those wins open entry into stronger
+      fields, and the next step is 36-hole regional events on full-length courses.</p>
+    <p>On the golf itself: cutting penalty strokes and double bogeys, tightening putting through the L.A.B.
+      method, and holding backswing length under pressure.</p>`;
 }
 
 function renderProfile() {
@@ -834,8 +876,7 @@ document.querySelectorAll(".filter").forEach(btn => {
 
 $("downloadCsv").addEventListener("click", downloadCsv);
 
-/* Each section renders independently. Without this, one bad row anywhere would
-   blank every section after it — which is how the charts went missing once. */
+/* Each section renders independently so one bad row cannot blank the rest. */
 [
   ["hero", renderHero],
   ["quick links", renderQuickLinks],
@@ -847,6 +888,7 @@ $("downloadCsv").addEventListener("click", downloadCsv);
   ["videos", renderVideos],
   ["contact", renderContact],
   ["charts", renderCharts],
+  ["development focus", renderDevelopmentFocus],
   ["setup banner", renderSetupBanner],
 ].forEach(([name, fn]) => {
   try {
