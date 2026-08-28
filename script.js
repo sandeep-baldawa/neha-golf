@@ -204,6 +204,7 @@ const schedule = [
   {sortDate:"2026-09-20", date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"League match", status:"Scheduled"},
+  {sortDate:"2026-09-26", date:"Sep 26, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
   {sortDate:"2026-09-27", date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
   {sortDate:"2026-09-30", date:"Sep 30, 2026", event:"EBAL match vs. Monte Vista (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
