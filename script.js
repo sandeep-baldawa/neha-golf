@@ -46,6 +46,12 @@ const config = {
   // { title: "Driver, face-on and down-the-line", url: "https://youtu.be/…", note: "Recorded Aug 2026" }
   videos: [],
 
+  // --- Analytics ----------------------------------------------------------
+  // GoatCounter: cookieless, no consent banner needed. Sign up at goatcounter.com,
+  // then paste the "data-goatcounter" endpoint here. Empty = no tracking at all.
+  // e.g. "https://nehagolf.goatcounter.com/count"
+  goatCounterUrl: "",
+
   // --- Schedule -----------------------------------------------------------
   // false hides EBAL league matches, leaving tournaments and championships.
   showLeagueMatches: true,
@@ -200,7 +206,7 @@ const schedule = [
   {sortDate:"2026-09-02", date:"Sep 2, 2026", event:"EBAL match vs. San Ramon Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-05", date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
   {sortDate:"2026-09-09", date:"Sep 9, 2026", event:"EBAL match at California (away)", tour:"High school", venue:"League match", status:"Scheduled"},
-  {sortDate:"2026-09-12", date:"Sep 12–13, 2026", event:"Mountain View Fall Series #2", tour:"JGANC", venue:"Shoreline Golf Links", status:"Confirmed"},
+  {sortDate:"2026-09-12", date:"Sep 12, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Napa Golf Course at Kennedy Park", status:"Registered"},
   {sortDate:"2026-09-16", date:"Sep 16, 2026", event:"EBAL match at Granada (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-20", date:"Sep 20, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
@@ -850,6 +856,15 @@ function renderCharts() {
    Local setup checklist — never renders on the live domain
    ========================================================================== */
 
+function loadAnalytics() {
+  if (!config.goatCounterUrl) return;
+  const el = document.createElement("script");
+  el.async = true;
+  el.dataset.goatcounter = config.goatCounterUrl;
+  el.src = "//gc.zgo.at/count.js";
+  document.body.appendChild(el);
+}
+
 function renderSetupBanner() {
   const isPreview = ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
   if (!isPreview) return;
@@ -907,6 +922,7 @@ $("downloadCsv").addEventListener("click", downloadCsv);
   ["contact", renderContact],
   ["charts", renderCharts],
   ["development focus", renderDevelopmentFocus],
+  ["analytics", loadAnalytics],
   ["setup banner", renderSetupBanner],
 ].forEach(([name, fn]) => {
   try {
