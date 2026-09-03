@@ -182,6 +182,7 @@ const results = [
    ========================================================================== */
 
 const matches = [
+  {date:"2026-09-02", event:"Crow Canyon Country Club", score:41, par:34, notes:"4·5·5·4·4·6·5·3·5", verified:true},
   {date:"2026-08-26", event:"Dublin Ranch Golf Course", score:34, par:31, tees:"White", yardage:"2109", notes:"4·4·2·3·6·3·4·4·4", verified:true},
   {date:"2025-09-28", datePrecision:"month", event:"The Bridges Golf Club", score:43, par:38, notes:"4·7·4·5·4·5·4·6·4", verified:true},
   {date:"2025-09-21", datePrecision:"month", event:"Dublin Ranch Golf Course", score:35, verified:false},
