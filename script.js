@@ -96,6 +96,7 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-09-05", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"91", par:73, tees:"Red", notes:"Round 1 • 45 out, 46 in • Girls 16-18"},
   {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", finish:"1st", notes:"40–39 • 1 birdie • 10 pars • 2 doubles"},
   {date:"2026-08-16", event:"Moffett Field", tour:"U.S. Kids Golf", score:"81", notes:"Peninsula Fall 2026"},
   {date:"2026-08-15", event:"Moffett Field", tour:"U.S. Kids Golf", score:"88", notes:"Peninsula Fall 2026"},
