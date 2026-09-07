@@ -96,7 +96,8 @@ const config = {
    ========================================================================== */
 
 const results = [
-  {date:"2026-09-05", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"91", par:73, tees:"Red", notes:"Round 1 • 45 out, 46 in • Girls 16-18"},
+  {date:"2026-09-06", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"82", par:73, tees:"Red", notes:"Round 2 • 39 out, 43 in • birdie on 8 • 173 total"},
+  {date:"2026-09-05", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"91", par:73, tees:"Red", notes:"Round 1 • 45 out, 46 in • 173 total"},
   {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", finish:"1st", notes:"40–39 • 1 birdie • 10 pars • 2 doubles"},
   {date:"2026-08-16", event:"Moffett Field", tour:"U.S. Kids Golf", score:"81", notes:"Peninsula Fall 2026"},
   {date:"2026-08-15", event:"Moffett Field", tour:"U.S. Kids Golf", score:"88", notes:"Peninsula Fall 2026"},
@@ -206,7 +207,7 @@ const matchSeason = {
    to false to hide them and leave only tournaments and championships. */
 const schedule = [
   {sortDate:"2026-09-02", date:"Sep 2, 2026", event:"EBAL match vs. San Ramon Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
-  {sortDate:"2026-09-05", date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
+  {sortDate:"2026-09-05", endDate:"2026-09-06", date:"Sep 5–6, 2026", event:"San Ramon Junior Series #2: 12–18", tour:"JGANC", venue:"San Ramon Golf Club", status:"Confirmed"},
   {sortDate:"2026-09-09", date:"Sep 9, 2026", event:"EBAL match at California (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-09-12", date:"Sep 12, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Napa Golf Course at Kennedy Park", status:"Registered"},
   {sortDate:"2026-09-16", date:"Sep 16, 2026", event:"EBAL match at Granada (away)", tour:"High school", venue:"League match", status:"Scheduled"},
@@ -223,11 +224,11 @@ const schedule = [
   {sortDate:"2026-10-10", date:"Oct 10, 2026", event:"Peninsula Fall Local Tour", tour:"U.S. Kids Golf", venue:"Shoreline Golf Links, Mountain View", status:"Registered"},
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Poppy Ridge Golf Course, Livermore — par 72, NCGA championship layout", status:"Championship"},
-  {sortDate:"2026-10-24", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
-  {sortDate:"2026-10-27", date:"Oct 27 – Nov 7, 2026", event:"CIF North Coast Section Championships", tour:"High school", venue:"Site and date set at the Oct 25 seeding meeting", status:"Postseason window"},
-  {sortDate:"2026-11-07", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
-  {sortDate:"2026-11-10", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
-  {sortDate:"2026-11-20", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
+  {sortDate:"2026-10-24", endDate:"2026-10-25", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
+  {sortDate:"2026-10-27", endDate:"2026-11-07", date:"Oct 27 – Nov 7, 2026", event:"CIF North Coast Section Championships", tour:"High school", venue:"Site and date set at the Oct 25 seeding meeting", status:"Postseason window"},
+  {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
+  {sortDate:"2026-11-10", endDate:"2026-11-17", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
+  {sortDate:"2026-11-20", endDate:"2026-11-21", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
 ];
 
 schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
@@ -456,9 +457,19 @@ function downloadCsv() {
    ========================================================================== */
 
 function renderSchedule() {
+  // Events that have finished drop off automatically, so the section never
+  // advertises a date that has already passed. endDate covers multi-day events.
+  const today = new Date().toISOString().slice(0, 10);
+  const upcoming = schedule.filter(item => (item.endDate || item.sortDate) >= today);
+
   const shown = config.showLeagueMatches
-    ? schedule
-    : schedule.filter(item => item.status !== "Scheduled");
+    ? upcoming
+    : upcoming.filter(item => item.status !== "Scheduled");
+
+  if (!shown.length) {
+    $("schedule").hidden = true;
+    return;
+  }
   $("scheduleGrid").innerHTML = shown.map(item => `
     <article class="schedule-card">
       <div class="schedule-date">${esc(item.date)}</div>
