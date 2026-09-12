@@ -96,6 +96,7 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-09-12", event:"East Bay Fall Local Tour — Napa Golf Course at Kennedy Park", tour:"U.S. Kids Golf", score:"88", par:72, tees:"Gold", yardage:"5595", finish:"2nd", notes:"First visit • 42 out, 46 in • par on the 130-yard 4th"},
   {date:"2026-09-06", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"82", par:73, tees:"Red", notes:"Round 2 • 39 out, 43 in • birdie on 8 • 173 total"},
   {date:"2026-09-05", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"91", par:73, tees:"Red", notes:"Round 1 • 45 out, 46 in • 173 total"},
   {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", finish:"1st", notes:"40–39 • 1 birdie • 10 pars • 2 doubles"},
