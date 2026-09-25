@@ -186,6 +186,7 @@ const results = [
    ========================================================================== */
 
 const matches = [
+  {date:"2026-09-24", event:"Callippe Preserve Golf Course", score:36, par:36, notes:"Level par • 2 birdies, 5 pars • 4·3·5·3·5·3·4·3·6", verified:true},
   {date:"2026-09-23", event:"Boundary Oaks Golf Course", score:41, notes:"EBAL match at Carondelet", verified:true},
   {date:"2026-09-02", event:"Crow Canyon Country Club", score:41, par:34, notes:"4·5·5·4·4·6·5·3·5", verified:true},
   {date:"2026-08-26", event:"Dublin Ranch Golf Course", score:34, par:31, tees:"White", yardage:"2109", notes:"4·4·2·3·6·3·4·4·4", verified:true},
