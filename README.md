@@ -179,6 +179,18 @@ It is a coaching number, not a recruiting one.
 The metric to watch is **doubles-or-worse per round**. It can go 4 → 3 → 2
 while the scoring average sits still, and it moves before the average does.
 
+### Where the doubles come from
+
+A second block breaks the same doubles down by cause rather than count:
+
+- **By hole type** — doubles as a share of par 3s, 4s and 5s *played*. The rate
+  is the comparable figure; a raw count just reflects there being more par 4s.
+- **Front nine / back nine** — whether they cluster early or late.
+- **Immediately after another double** — compounding. One bad hole becoming
+  two is a different problem from two unrelated bad holes.
+- **Worse than a double** — separates a bad hole from a lost one.
+- **Hole numbers** per round, so a card can be pulled up against them.
+
 Seeded with the two rounds that have hole-by-hole cards on file: Monarch Bay
 09-26 and San Ramon R2 09-06. Add cards from the JGS or U.S. Kids result page
 as they post.

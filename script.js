@@ -228,7 +228,7 @@ const schedule = [
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-07", date:"Oct 7, 2026", event:"EBAL match vs. Dougherty Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
-  {sortDate:"2026-10-10", date:"Oct 10, 2026", event:"Peninsula Fall Local Tour", tour:"U.S. Kids Golf", venue:"Shoreline Golf Links, Mountain View", status:"Registered"},
+  {sortDate:"2026-10-10", endDate:"2026-10-11", date:"Oct 10–11, 2026", event:"JGANC Monarch Bay", tour:"JGANC", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Poppy Ridge Golf Course, Livermore — par 72, NCGA championship layout", status:"Championship"},
   {sortDate:"2026-10-24", endDate:"2026-10-25", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
@@ -882,16 +882,34 @@ function roundShape(r) {
   if (!Array.isArray(r.holes) || !Array.isArray(r.holePars)) return null;
   if (r.holes.length !== 18 || r.holePars.length !== 18) return null;
 
-  const shape = { birdies: 0, pars: 0, bogeys: 0, doubles: 0, lostAboveBogey: 0 };
+  const shape = {
+    birdies: 0, pars: 0, bogeys: 0, doubles: 0, lostAboveBogey: 0,
+    triplePlus: 0,          // doubles that were worse than a double
+    front: 0, back: 0,      // which nine the doubles landed on
+    backToBack: 0,          // doubles immediately following another double
+    byPar: { 3: { played: 0, doubles: 0 }, 4: { played: 0, doubles: 0 }, 5: { played: 0, doubles: 0 } },
+    holes: [],              // 1-indexed hole numbers that went double or worse
+  };
+
+  let previousWasDouble = false;
   r.holes.forEach((strokes, i) => {
-    const diff = strokes - r.holePars[i];
+    const par = r.holePars[i];
+    const diff = strokes - par;
+    if (shape.byPar[par]) shape.byPar[par].played++;
+
     if (diff <= -1) shape.birdies++;
     else if (diff === 0) shape.pars++;
     else if (diff === 1) shape.bogeys++;
     else {
       shape.doubles++;
       shape.lostAboveBogey += diff - 1;   // strokes beyond a bogey on that hole
+      if (diff >= 3) shape.triplePlus++;
+      if (i < 9) shape.front++; else shape.back++;
+      if (previousWasDouble) shape.backToBack++;
+      if (shape.byPar[par]) shape.byPar[par].doubles++;
+      shape.holes.push(i + 1);
     }
+    previousWasDouble = diff >= 2;
   });
 
   const total = r.holes.reduce((a, b) => a + b, 0);
@@ -900,6 +918,71 @@ function roundShape(r) {
   shape.toPar = total - shape.par;
   shape.ifNoDoubles = total - shape.lostAboveBogey;  // every double capped at bogey
   return shape;
+}
+
+/* Where the doubles come from. A count says how many; this says which holes
+   are generating them, which is the part that can actually be practised. */
+function doublesBreakdown(shapes, rounds) {
+  const totalDoubles = shapes.reduce((a, s) => a + s.doubles, 0);
+  if (!totalDoubles) return "";
+
+  const sum = key => shapes.reduce((a, s) => a + s[key], 0);
+  const byPar = { 3: { played: 0, doubles: 0 }, 4: { played: 0, doubles: 0 }, 5: { played: 0, doubles: 0 } };
+  shapes.forEach(s => [3, 4, 5].forEach(p => {
+    byPar[p].played += s.byPar[p].played;
+    byPar[p].doubles += s.byPar[p].doubles;
+  }));
+
+  const parRows = [3, 4, 5].map(p => {
+    const { played, doubles } = byPar[p];
+    if (!played) return "";
+    const rate = (doubles / played) * 100;
+    return `<tr>
+      <td>Par ${p}s</td>
+      <td class="num">${played}</td>
+      <td class="num">${doubles}</td>
+      <td class="num ${rate >= 20 ? "flag" : ""}">${rate.toFixed(0)}%</td>
+      <td class="num">${((doubles / totalDoubles) * 100).toFixed(0)}%</td>
+    </tr>`;
+  }).join("");
+
+  const front = sum("front"), back = sum("back");
+  const b2b = sum("backToBack"), triples = sum("triplePlus");
+
+  const perRoundHoles = rounds.map(r => {
+    const s = roundShape(r);
+    return `<li><strong>${esc(prettyDate(r.date))}</strong> — holes ${s.holes.join(", ")}</li>`;
+  }).join("");
+
+  return `
+    <h3 class="shape-sub">Where the doubles come from</h3>
+
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead><tr>
+          <th>Hole type</th><th class="num">Played</th><th class="num">Doubles</th>
+          <th class="num">Rate</th><th class="num">Share of all</th>
+        </tr></thead>
+        <tbody>${parRows}</tbody>
+      </table>
+    </div>
+
+    <div class="progress-stats">
+      <div class="progress-stat"><span class="progress-value">${front} / ${back}</span><span class="progress-label">Front nine / back nine</span></div>
+      <div class="progress-stat"><span class="progress-value">${b2b}</span><span class="progress-label">Immediately after another double</span></div>
+      <div class="progress-stat"><span class="progress-value">${triples}</span><span class="progress-label">Worse than a double</span></div>
+      <div class="progress-stat"><span class="progress-value">${totalDoubles}</span><span class="progress-label">Total, all rounds on file</span></div>
+    </div>
+
+    <p class="footnote">
+      <strong>Rate</strong> is doubles as a share of that hole type played, which is the
+      comparable number — there are simply more par 4s in a round.
+      <strong>Immediately after another double</strong> counts compounding: one bad hole
+      becoming two. <strong>Worse than a double</strong> separates a bad hole from a lost one.
+    </p>
+
+    <p class="footnote"><strong>Hole numbers:</strong></p>
+    <ul class="shape-holes">${perRoundHoles}</ul>`;
 }
 
 function renderRoundShape() {
@@ -963,8 +1046,15 @@ function renderRoundShape() {
       <strong>Capped</strong> is what the round would have been with every double bogey or worse
       played as a bogey — no extra good shots, just no compounding. The gap between
       <strong>Actual</strong> and <strong>Capped</strong> is the entire opportunity.
-      ${withCards.length < 4 ? `<br><strong>${withCards.length} round${withCards.length === 1 ? "" : "s"} with card data.</strong>
-      Add <code>holePars</code> and <code>holes</code> to a round in <code>script.js</code> to include it here.` : ""}
+    </p>
+
+    ${doublesBreakdown(shapes, withCards)}
+
+    <p class="footnote">
+      ${withCards.length < 4
+        ? `<strong>${withCards.length} round${withCards.length === 1 ? "" : "s"} with card data — too few to call any of this a trend.</strong>
+           Add <code>holePars</code> and <code>holes</code> to a round in <code>script.js</code> to include it here.`
+        : `${withCards.length} rounds with card data.`}
     </p>`;
 }
 
