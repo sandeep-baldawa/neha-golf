@@ -96,10 +96,15 @@ const config = {
    ========================================================================== */
 
 const results = [
-  {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Gold", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • 42 out, 42 in • 10 pars, no holes worse than double"},
+  {date:"2026-09-27", event:"East Bay Fall Local Tour — Las Positas Golf Course", tour:"U.S. Kids Golf", score:"86", par:72, finish:"2nd", notes:"Girls 15-18 • Livermore • second of back-to-back tour days"},
+  {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Gold", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • 42 out, 42 in • 10 pars, no holes worse than double",
+   holePars:[4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
+   holes:   [4,6,6,3,5,5,3,4,6, 3,5,6,5,4,5,5,5,4]},
   {date:"2026-09-19", event:"East Bay Fall Local Tour — Paradise Valley Golf Course", tour:"U.S. Kids Golf", score:"77", par:72, finish:"1st", notes:"Girls 15-18 • best round to par on record"},
   {date:"2026-09-12", event:"East Bay Fall Local Tour — Napa Golf Course at Kennedy Park", tour:"U.S. Kids Golf", score:"88", par:72, tees:"Gold", yardage:"5595", finish:"2nd", notes:"First visit • 42 out, 46 in • par on the 130-yard 4th"},
-  {date:"2026-09-06", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"82", par:73, tees:"Red", notes:"Round 2 • 39 out, 43 in • birdie on 8 • 173 total"},
+  {date:"2026-09-06", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"82", par:73, tees:"Red", notes:"Round 2 • 39 out, 43 in • birdie on 8 • 173 total",
+   holePars:[4,3,4,5,4,5,3,5,4, 4,4,4,5,3,5,4,3,4],
+   holes:   [4,4,4,5,5,5,3,4,5, 5,4,6,6,3,5,6,3,5]},
   {date:"2026-09-05", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"91", par:73, tees:"Red", notes:"Round 1 • 45 out, 46 in • 173 total"},
   {date:"2026-08-23", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"79", finish:"1st", notes:"40–39 • 1 birdie • 10 pars • 2 doubles"},
   {date:"2026-08-16", event:"Moffett Field", tour:"U.S. Kids Golf", score:"81", notes:"Peninsula Fall 2026"},
@@ -219,7 +224,6 @@ const schedule = [
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"Boundary Oaks Golf Course, Walnut Creek", status:"Scheduled"},
   {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"Callippe Preserve Golf Course, Pleasanton", status:"Scheduled"},
-  {sortDate:"2026-09-27", date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
   {sortDate:"2026-09-30", date:"Sep 30, 2026", event:"EBAL match vs. Monte Vista (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
@@ -862,8 +866,115 @@ function renderCharts() {
 }
 
 /* ==========================================================================
+   Round shape — local preview only, never renders on the live domain
+
+   A score says what happened. It does not say why. Two rounds of 84 can be
+   fourteen pars and four blow-ups, or eighteen bogeys — completely different
+   problems with completely different fixes.
+
+   `holePars` and `holes` are optional 18-element arrays on a round. When both
+   are present the round's shape is computed: birdies, pars, bogeys, and holes
+   of double bogey or worse. The number to watch is doubles-or-worse per round.
+   It moves before the scoring average does.
+   ========================================================================== */
+
+function roundShape(r) {
+  if (!Array.isArray(r.holes) || !Array.isArray(r.holePars)) return null;
+  if (r.holes.length !== 18 || r.holePars.length !== 18) return null;
+
+  const shape = { birdies: 0, pars: 0, bogeys: 0, doubles: 0, lostAboveBogey: 0 };
+  r.holes.forEach((strokes, i) => {
+    const diff = strokes - r.holePars[i];
+    if (diff <= -1) shape.birdies++;
+    else if (diff === 0) shape.pars++;
+    else if (diff === 1) shape.bogeys++;
+    else {
+      shape.doubles++;
+      shape.lostAboveBogey += diff - 1;   // strokes beyond a bogey on that hole
+    }
+  });
+
+  const total = r.holes.reduce((a, b) => a + b, 0);
+  shape.total = total;
+  shape.par = r.holePars.reduce((a, b) => a + b, 0);
+  shape.toPar = total - shape.par;
+  shape.ifNoDoubles = total - shape.lostAboveBogey;  // every double capped at bogey
+  return shape;
+}
+
+function renderRoundShape() {
+  const section = $("roundShape");
+  if (!section) return;
+  if (!isPreviewHost()) return;
+
+  const withCards = allRounds
+    .filter(r => roundShape(r))
+    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+  if (!withCards.length) return;
+  section.hidden = false;
+
+  const rows = withCards.map(r => {
+    const s = roundShape(r);
+    return `<tr>
+      <td>${esc(prettyDate(r.date))}</td>
+      <td>${esc(r.event)}</td>
+      <td class="num"><strong>${s.total}</strong> <span class="muted">${s.toPar >= 0 ? "+" : ""}${s.toPar}</span></td>
+      <td class="num">${s.birdies || "—"}</td>
+      <td class="num">${s.pars}</td>
+      <td class="num">${s.bogeys}</td>
+      <td class="num ${s.doubles >= 3 ? "flag" : ""}">${s.doubles}</td>
+      <td class="num">${s.lostAboveBogey}</td>
+      <td class="num"><strong>${s.ifNoDoubles}</strong></td>
+    </tr>`;
+  }).join("");
+
+  const shapes = withCards.map(roundShape);
+  const avgDoubles = mean(shapes.map(s => s.doubles));
+  const avgLost = mean(shapes.map(s => s.lostAboveBogey));
+  const avgActual = mean(shapes.map(s => s.total));
+  const avgCapped = mean(shapes.map(s => s.ifNoDoubles));
+
+  section.innerHTML = `
+    <div class="section-heading">
+      <h2>Round shape</h2>
+      <p class="section-note">Local preview only — this section is not published.</p>
+    </div>
+
+    <div class="progress-stats">
+      <div class="progress-stat"><span class="progress-value">${avgDoubles.toFixed(1)}</span><span class="progress-label">Doubles or worse, per round</span></div>
+      <div class="progress-stat"><span class="progress-value">${avgLost.toFixed(1)}</span><span class="progress-label">Strokes lost above bogey</span></div>
+      <div class="progress-stat"><span class="progress-value">${avgActual.toFixed(1)}</span><span class="progress-label">Actual average</span></div>
+      <div class="progress-stat"><span class="progress-value">${avgCapped.toFixed(1)}</span><span class="progress-label">Average with every double capped at bogey</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead><tr>
+          <th>Date</th><th>Event</th><th class="num">Score</th>
+          <th class="num">Birdies</th><th class="num">Pars</th><th class="num">Bogeys</th>
+          <th class="num">Dbl+</th><th class="num">Lost</th><th class="num">Capped</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <p class="footnote">
+      <strong>Capped</strong> is what the round would have been with every double bogey or worse
+      played as a bogey — no extra good shots, just no compounding. The gap between
+      <strong>Actual</strong> and <strong>Capped</strong> is the entire opportunity.
+      ${withCards.length < 4 ? `<br><strong>${withCards.length} round${withCards.length === 1 ? "" : "s"} with card data.</strong>
+      Add <code>holePars</code> and <code>holes</code> to a round in <code>script.js</code> to include it here.` : ""}
+    </p>`;
+}
+
+/* ==========================================================================
    Local setup checklist — never renders on the live domain
    ========================================================================== */
+
+function isPreviewHost() {
+  return ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
+}
 
 function loadAnalytics() {
   if (!config.goatCounterUrl) return;
@@ -875,8 +986,7 @@ function loadAnalytics() {
 }
 
 function renderSetupBanner() {
-  const isPreview = ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
-  if (!isPreview) return;
+  if (!isPreviewHost()) return;
 
   const todo = [
     [!config.recruitingEmail, "Add config.recruitingEmail — the contact section is hidden without it"],
@@ -931,6 +1041,7 @@ $("downloadCsv").addEventListener("click", downloadCsv);
   ["contact", renderContact],
   ["charts", renderCharts],
   ["development focus", renderDevelopmentFocus],
+  ["round shape", renderRoundShape],
   ["analytics", loadAnalytics],
   ["setup banner", renderSetupBanner],
 ].forEach(([name, fn]) => {

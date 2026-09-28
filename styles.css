@@ -624,3 +624,9 @@ footer p { margin: 0; }
   border-top: 2px dashed var(--accent);
   opacity: .6;
 }
+
+/* Round shape — local preview only (see #roundShape in index.html) */
+#roundShape .num { text-align: right; font-variant-numeric: tabular-nums; }
+#roundShape .muted { color: #66706a; font-size: .85em; }
+#roundShape .flag { color: #a8341f; font-weight: 800; }
+#roundShape .section-note { color: #66706a; font-size: .9rem; }

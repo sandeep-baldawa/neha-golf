@@ -147,6 +147,42 @@ Rendered by `renderDevelopmentFocus()` in `script.js`.
 `config.mentionInjury` toggles the sentence about the wrist injury on or off.
 Everything else in the section is unchanged either way.
 
+## Round shape — the doubles tracker (local preview only)
+
+A score says what happened; it doesn't say why. Two rounds of 84 can be
+fourteen pars and four blow-ups, or eighteen bogeys — different problems with
+different fixes.
+
+Add two optional 18-element arrays to any round in `results`:
+
+```js
+{date:"2026-09-26", event:"…", tour:"U.S. Kids Golf", score:"84", par:72,
+ holePars:[4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
+ holes:   [4,6,6,3,5,5,3,4,6, 3,5,6,5,4,5,5,5,4]},
+```
+
+Both must be present and both must have 18 entries, or the round is skipped.
+Nothing else about the round changes — `score` is still what the table shows.
+
+A **Round shape** section then appears, listing birdies, pars, bogeys and
+doubles-or-worse per round, plus two derived numbers:
+
+- **Lost** — strokes spent beyond a bogey on the holes that went wrong.
+- **Capped** — what the round would have been with every double played as a
+  bogey. No extra good shots, just no compounding. The gap between the actual
+  average and the capped average is the whole opportunity.
+
+**This section renders only on `file://` and `localhost`.** It is hidden on
+nehabaldawa.com the same way the setup checklist is, via `isPreviewHost()`.
+It is a coaching number, not a recruiting one.
+
+The metric to watch is **doubles-or-worse per round**. It can go 4 → 3 → 2
+while the scoring average sits still, and it moves before the average does.
+
+Seeded with the two rounds that have hole-by-hole cards on file: Monarch Bay
+09-26 and San Ramon R2 09-06. Add cards from the JGS or U.S. Kids result page
+as they post.
+
 ## Things deliberately left off the page
 
 - **The JGS rank number.** The linked profile carries the current ranking.
