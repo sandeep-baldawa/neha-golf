@@ -137,7 +137,8 @@ one profile row. Set `priorityStatus.level` to `""` to hide the card.
 `config.priorityStatusUrl` takes an official U.S. Kids Golf player URL. It is
 left empty rather than pointing at a third-party lookup site.
 
-If any Fall 2025 U.S. Kids rounds are missing from `results`, add them.
+The Fall 2025 Peninsula round is in the log: 80 at San Ramon on 2025-10-25,
+first place, which is the finish behind the Level 8 status.
 
 ## The development-focus copy
 
@@ -175,7 +176,7 @@ To check what is actually being served, ignoring every cache in between:
 curl -s https://nehabaldawa.com/ | grep 'name="build"'
 ```
 
-The current build is `2026-08-27i`. Anything else — or no output at all —
+The current build is `2026-08-27k`. Anything else — or no output at all —
 means the deploy has not reached the origin yet.
 
 ## If a section of the page looks empty
@@ -222,6 +223,20 @@ prints the email it would have sent instead:
 ```
 python3 scripts/send-reminders.py
 ```
+
+## Analytics
+
+`config.goatCounterUrl` — paste a GoatCounter endpoint and the script loads;
+leave it empty and nothing is tracked at all.
+
+GoatCounter is cookieless, so no consent banner is required. On a site with
+this little traffic the pageview count is noise — the useful figure is the
+**referrer list**, which shows whether visits came from outreach emails or
+from search.
+
+Google Analytics is deliberately not used here: it sets cookies, may require a
+consent notice, and would send visitor data about a minor's page to a third
+party.
 
 ## Publishing
 

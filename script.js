@@ -96,6 +96,7 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Gold", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • 42 out, 42 in • 10 pars, no holes worse than double"},
   {date:"2026-09-19", event:"East Bay Fall Local Tour — Paradise Valley Golf Course", tour:"U.S. Kids Golf", score:"77", par:72, finish:"1st", notes:"Girls 15-18 • best round to par on record"},
   {date:"2026-09-12", event:"East Bay Fall Local Tour — Napa Golf Course at Kennedy Park", tour:"U.S. Kids Golf", score:"88", par:72, tees:"Gold", yardage:"5595", finish:"2nd", notes:"First visit • 42 out, 46 in • par on the 130-yard 4th"},
   {date:"2026-09-06", event:"San Ramon Junior Series #2 — San Ramon Golf Club", tour:"JGANC", score:"82", par:73, tees:"Red", notes:"Round 2 • 39 out, 43 in • birdie on 8 • 173 total"},
@@ -218,7 +219,6 @@ const schedule = [
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"Boundary Oaks Golf Course, Walnut Creek", status:"Scheduled"},
   {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"Callippe Preserve Golf Course, Pleasanton", status:"Scheduled"},
-  {sortDate:"2026-09-26", date:"Sep 26, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
   {sortDate:"2026-09-27", date:"Sep 27, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Las Positas Golf Course, Livermore", status:"Registered"},
   {sortDate:"2026-09-30", date:"Sep 30, 2026", event:"EBAL match vs. Monte Vista (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
@@ -233,13 +233,6 @@ const schedule = [
   {sortDate:"2026-11-10", endDate:"2026-11-17", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
   {sortDate:"2026-11-20", endDate:"2026-11-21", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
 ];
-
-schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
-
-/* Sorted by sortDate (the first day of the event) so a new entry can be pasted
-   anywhere in the list above and still land in the right place. `date` is the
-   display string; `sortDate` is never shown. */
-schedule.sort((a, b) => String(a.sortDate || "").localeCompare(String(b.sortDate || "")));
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
    anywhere in the list above and still land in the right place. `date` is the
