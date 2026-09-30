@@ -224,7 +224,6 @@ const schedule = [
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"Boundary Oaks Golf Course, Walnut Creek", status:"Scheduled"},
   {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"Callippe Preserve Golf Course, Pleasanton", status:"Scheduled"},
-  {sortDate:"2026-09-30", date:"Sep 30, 2026", event:"EBAL match vs. Monte Vista (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-07", date:"Oct 7, 2026", event:"EBAL match vs. Dougherty Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
