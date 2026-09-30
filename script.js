@@ -235,6 +235,7 @@ const schedule = [
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
   {sortDate:"2026-11-10", endDate:"2026-11-17", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
   {sortDate:"2026-11-20", endDate:"2026-11-21", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
+  {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Del Monte JTNC", tour:"JTNC", venue:"Del Monte Golf Course, Monterey", status:"Registration opens Oct 5"},
 ];
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
