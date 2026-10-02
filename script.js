@@ -16,7 +16,7 @@ const config = {
   swingVideoUrl: "",            // unlisted YouTube link is fine
   resumeUrl: "",                // one-page PDF in this repo, e.g. "neha-baldawa-golf-resume.pdf"
   jgsProfileUrl: "https://www.juniorgolfscoreboard.com/",
-  tugrProfileUrl: "https://www.tugr.org/",
+  tugrProfileUrl: "https://tugr.org/junior/player/neha%20baldawa%20:%20pleasanton,%20ca;%20usa%20(2028)%7C%7CJUNIOR_GIRLS",
   ncsaProfileUrl: "",
 
   // Press coverage. Each entry appears in the verification links row.
@@ -231,10 +231,10 @@ const schedule = [
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Poppy Ridge Golf Course, Livermore — par 72, NCGA championship layout", status:"Championship"},
   {sortDate:"2026-10-24", endDate:"2026-10-25", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
-  {sortDate:"2026-10-27", endDate:"2026-11-07", date:"Oct 27 – Nov 7, 2026", event:"CIF North Coast Section Championships", tour:"High school", venue:"Site and date set at the Oct 25 seeding meeting", status:"Postseason window"},
+  {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro", status:"On qualifying"},
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
-  {sortDate:"2026-11-10", endDate:"2026-11-17", date:"Nov 10–17, 2026", event:"CIF NorCal Championships", tour:"High school", venue:"On advancing from NCS", status:"Postseason window"},
-  {sortDate:"2026-11-20", endDate:"2026-11-21", date:"Nov 20–21, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"Postseason window"},
+  {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
+  {sortDate:"2026-11-18", date:"Nov 18, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"On advancing"},
   {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Del Monte JTNC", tour:"JTNC", venue:"Del Monte Golf Course, Monterey", status:"Registration opens Oct 5"},
 ];
 
