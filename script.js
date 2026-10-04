@@ -96,6 +96,9 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-10-03", event:"East Bay Fall Local Tour — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"86", par:72, yardage:"5611", finish:"2nd", notes:"Girls 15-18 • 45 out, 41 in • birdie on 13 • 8 pars",
+   holePars:[4,3,4,4,4,5,3,5,4, 4,4,4,5,3,5,4,3,4],
+   holes:   [7,3,5,4,6,6,3,5,6, 4,4,4,4,3,6,5,4,7]},
   {date:"2026-09-27", event:"East Bay Fall Local Tour — Las Positas Golf Course", tour:"U.S. Kids Golf", score:"86", par:72, finish:"2nd", notes:"Girls 15-18 • Livermore • second of back-to-back tour days"},
   {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Gold", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • 42 out, 42 in • 10 pars, no holes worse than double",
    holePars:[4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
@@ -224,7 +227,6 @@ const schedule = [
   {sortDate:"2026-09-19", date:"Sep 19, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"Paradise Valley Golf Course, Fairfield", status:"Registered"},
   {sortDate:"2026-09-23", date:"Sep 23, 2026", event:"EBAL match at Carondelet (away)", tour:"High school", venue:"Boundary Oaks Golf Course, Walnut Creek", status:"Scheduled"},
   {sortDate:"2026-09-24", date:"Sep 24, 2026", event:"EBAL match vs. Livermore (home)", tour:"High school", venue:"Callippe Preserve Golf Course, Pleasanton", status:"Scheduled"},
-  {sortDate:"2026-10-03", date:"Oct 3, 2026", event:"East Bay Fall Local Tour", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-04", date:"Oct 4, 2026", event:"East Bay Fall Tour Championship", tour:"U.S. Kids Golf", venue:"San Ramon Golf Club", status:"Registered"},
   {sortDate:"2026-10-07", date:"Oct 7, 2026", event:"EBAL match vs. Dougherty Valley (home)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-10", endDate:"2026-10-11", date:"Oct 10–11, 2026", event:"JGANC Monarch Bay", tour:"JGANC", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
@@ -917,7 +919,113 @@ function roundShape(r) {
   shape.par = r.holePars.reduce((a, b) => a + b, 0);
   shape.toPar = total - shape.par;
   shape.ifNoDoubles = total - shape.lostAboveBogey;  // every double capped at bogey
+
+  /* Optional putt data splits the round into approach and putting.
+
+     A hole's score decomposes exactly, with no fudge factor:
+
+       strokesToGreen = strokes - putts
+       approachDelta  = strokesToGreen - regulation   (reg: 1 on a par 3, 2 on a 4, 3 on a 5)
+       puttDelta      = putts - 2
+       approachDelta + puttDelta === strokes - par
+
+     So every stroke over par is attributable to one side or the other. A round
+     can be +14 with the approach play level and the putter costing all of it,
+     and the raw score cannot tell those apart. This can. */
+  if (Array.isArray(r.holePutts) && r.holePutts.length === 18) {
+    const regulation = par => (par === 3 ? 1 : par === 4 ? 2 : 3);
+    shape.putts = 0;
+    shape.threePutts = 0;
+    shape.gir = 0;
+    shape.approachDelta = 0;
+    shape.puttDelta = 0;
+
+    r.holePutts.forEach((putts, i) => {
+      const par = r.holePars[i];
+      const strokesToGreen = r.holes[i] - putts;
+      shape.putts += putts;
+      if (putts >= 3) shape.threePutts++;
+      if (strokesToGreen <= regulation(par)) shape.gir++;
+      shape.approachDelta += strokesToGreen - regulation(par);
+      shape.puttDelta += putts - 2;
+    });
+  }
   return shape;
+}
+
+/* Approach vs putting. Only rendered for rounds that carry `holePutts`.
+
+   This is the section that answers "was that a ball-striking round or a
+   putting round", which a stroke count alone cannot. */
+function puttingSplit(rounds) {
+  const withPutts = rounds.filter(r => {
+    const s = roundShape(r);
+    return s && s.putts != null;
+  });
+
+  if (!withPutts.length) {
+    return `
+      <h3 class="shape-sub">Approach vs putting</h3>
+      <p class="footnote">
+        No rounds carry putt data yet. Add a third 18-element array,
+        <code>holePutts</code>, to a round and this splits every stroke over par
+        into approach and putting — the two get confused constantly, and they are
+        completely different problems.
+      </p>`;
+  }
+
+  const rows = withPutts.map(r => {
+    const s = roundShape(r);
+    const sign = n => (n >= 0 ? "+" : "") + n;
+    return `<tr>
+      <td>${esc(prettyDate(r.date))}</td>
+      <td class="num"><strong>${s.total}</strong> <span class="muted">${sign(s.toPar)}</span></td>
+      <td class="num">${s.gir}/18</td>
+      <td class="num">${s.putts}</td>
+      <td class="num">${s.threePutts}</td>
+      <td class="num ${s.approachDelta > s.puttDelta ? "flag" : ""}">${sign(s.approachDelta)}</td>
+      <td class="num ${s.puttDelta > s.approachDelta ? "flag" : ""}">${sign(s.puttDelta)}</td>
+    </tr>`;
+  }).join("");
+
+  const shapes = withPutts.map(roundShape);
+  const appr = shapes.reduce((a, s) => a + s.approachDelta, 0);
+  const putt = shapes.reduce((a, s) => a + s.puttDelta, 0);
+  const verdict = appr === putt
+    ? "Approach and putting are costing the same."
+    : appr > putt
+      ? "<strong>Approach play is the larger cost.</strong>"
+      : "<strong>Putting is the larger cost.</strong>";
+
+  return `
+    <h3 class="shape-sub">Approach vs putting</h3>
+
+    <div class="progress-stats">
+      <div class="progress-stat"><span class="progress-value">${appr >= 0 ? "+" : ""}${appr}</span><span class="progress-label">Strokes lost to approach</span></div>
+      <div class="progress-stat"><span class="progress-value">${putt >= 0 ? "+" : ""}${putt}</span><span class="progress-label">Strokes lost to putting</span></div>
+      <div class="progress-stat"><span class="progress-value">${(shapes.reduce((a, s) => a + s.putts, 0) / shapes.length).toFixed(1)}</span><span class="progress-label">Putts per round</span></div>
+      <div class="progress-stat"><span class="progress-value">${(shapes.reduce((a, s) => a + s.gir, 0) / shapes.length).toFixed(1)}</span><span class="progress-label">Greens in regulation, per round</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead><tr>
+          <th>Date</th><th class="num">Score</th><th class="num">GIR</th>
+          <th class="num">Putts</th><th class="num">3-putts</th>
+          <th class="num">Approach</th><th class="num">Putting</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <p class="footnote">
+      ${verdict}
+      Every stroke over par belongs to exactly one side: <strong>approach</strong> is
+      strokes taken to reach the green beyond regulation, <strong>putting</strong> is
+      putts beyond two. The two columns always sum to the round's score to par, so
+      nothing is double-counted or lost.
+      ${withPutts.length < 3 ? ` Only ${withPutts.length} round${withPutts.length === 1 ? "" : "s"} with putt data so far.` : ""}
+    </p>`;
 }
 
 /* Where the doubles come from. A count says how many; this says which holes
@@ -1047,6 +1155,8 @@ function renderRoundShape() {
       played as a bogey — no extra good shots, just no compounding. The gap between
       <strong>Actual</strong> and <strong>Capped</strong> is the entire opportunity.
     </p>
+
+    ${puttingSplit(withCards)}
 
     ${doublesBreakdown(shapes, withCards)}
 

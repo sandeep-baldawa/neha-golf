@@ -179,6 +179,35 @@ It is a coaching number, not a recruiting one.
 The metric to watch is **doubles-or-worse per round**. It can go 4 → 3 → 2
 while the scoring average sits still, and it moves before the average does.
 
+### Approach vs putting — add `holePutts`
+
+A third optional 18-element array, putts taken on each hole:
+
+```js
+holePars: [4,3,4,4,4,5,3,5,4, 4,4,4,5,3,5,4,3,4],
+holes:    [7,3,5,4,6,6,3,5,6, 4,4,4,4,3,6,5,4,7],
+holePutts:[4,2,3,2,4,2,2,2,4, 2,2,2,1,2,3,3,3,4],
+```
+
+With it, each hole decomposes exactly:
+
+```
+strokesToGreen = strokes - putts
+approachDelta  = strokesToGreen - regulation    (1 on a par 3, 2 on a 4, 3 on a 5)
+puttDelta      = putts - 2
+approachDelta + puttDelta === strokes - par
+```
+
+No fudge factor — the two columns always sum to the round's score to par.
+A round can be +14 with the approach play level and the putter costing every
+stroke, and the raw score cannot tell that apart from the reverse. This can.
+
+It also reports greens in regulation and three-putts, both derived rather than
+recorded separately.
+
+**Record one number per hole: putts.** That's the only new thing needed on the
+card, and it settles arguments that stroke counts alone can't.
+
 ### Where the doubles come from
 
 A second block breaks the same doubles down by cause rather than count:
