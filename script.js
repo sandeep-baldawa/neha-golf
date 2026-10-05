@@ -10,7 +10,7 @@
 const config = {
   // --- Contact ------------------------------------------------------------
   recruitingEmail: "nehabaldawa2020@gmail.com",
-  emailOwner: "family-monitored inbox",
+  emailOwner: "",
 
   // --- Optional. Each one appears only once it has a value ----------------
   swingVideoUrl: "",            // unlisted YouTube link is fine
@@ -703,7 +703,10 @@ function renderContact() {
     return;
   }
   section.hidden = false;
-  setText("contactCopy", `Email is the fastest way to reach Neha and her family. Messages go to a ${config.emailOwner}.`);
+  /* config.emailOwner appends a sentence about who reads the inbox. Leave it
+     empty and only the first sentence prints. */
+  setText("contactCopy",
+    `Email is the fastest way to reach Neha and her family.${config.emailOwner ? ` Messages go to a ${config.emailOwner}.` : ""}`);
   $("contactActions").innerHTML =
     `<a class="button primary" href="mailto:${esc(config.recruitingEmail)}">${esc(config.recruitingEmail)}</a>` +
     (config.resumeUrl ? `<a class="button secondary" href="${esc(config.resumeUrl)}" target="_blank" rel="noopener">Golf resume (PDF)</a>` : "");

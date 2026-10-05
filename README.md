@@ -23,7 +23,12 @@ for you to forget.
 
 1. **`config.recruitingEmail`** — until this is set, the whole Contact section
    and its nav link are hidden, and a coach has no way to reply. Use a
-   parent-monitored address. Do not publish a phone number or home address.
+   address the family checks. Do not publish a phone number or home address.
+
+   **`config.emailOwner`** appends a second sentence naming who reads the
+   inbox. It is empty, so the contact section prints only "Email is the fastest
+   way to reach Neha and her family." Set it to a phrase such as
+   `"shared family inbox"` to add that sentence back.
 2. **`config.videos`** — at least one swing video. Face-on and down-the-line,
    driver and iron. An unlisted YouTube link is fine.
 3. **`config.jgsProfileUrl` / `config.tugrProfileUrl`** — these currently point
