@@ -239,6 +239,7 @@ const schedule = [
   {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro", status:"On qualifying"},
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
   {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
+  {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
   {sortDate:"2026-11-18", date:"Nov 18, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"On advancing"},
   {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Del Monte JTNC", tour:"JTNC", venue:"Del Monte Golf Course, Monterey", status:"Registration opens Oct 5"},
 ];
