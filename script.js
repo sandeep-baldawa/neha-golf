@@ -199,6 +199,7 @@ const results = [
    ========================================================================== */
 
 const matches = [
+  {date:"2026-10-07", event:"Castlewood Country Club", score:41, par:37, notes:"EBAL match vs. Dougherty Valley", verified:true},
   {date:"2026-09-24", event:"Callippe Preserve Golf Course", score:36, par:36, notes:"Level par • 2 birdies, 5 pars • 4·3·5·3·5·3·4·3·6", verified:true},
   {date:"2026-09-23", event:"Boundary Oaks Golf Course", score:41, notes:"EBAL match at Carondelet", verified:true},
   {date:"2026-09-02", event:"Crow Canyon Country Club", score:41, par:34, notes:"4·5·5·4·4·6·5·3·5", verified:true},
@@ -241,7 +242,7 @@ const schedule = [
   {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
   {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
   {sortDate:"2026-11-18", date:"Nov 18, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"On advancing"},
-  {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Del Monte JTNC", tour:"JTNC", venue:"Del Monte Golf Course, Monterey", status:"Registration opens Oct 5"},
+  {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Holiday Series I — Del Monte", tour:"JTNC", venue:"Del Monte Golf Club, Monterey", status:"Registered"},
 ];
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
