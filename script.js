@@ -96,6 +96,7 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-10-10", event:"JGANC Monarch Bay — Round 1", tour:"JGANC", score:"88", par:72, tees:"White", finish:"T4", notes:"Round 1 • first time from the white tees • 44 out, 44 in • 6 pars • par 4s cost +12 of the +16"},
   {date:"2026-10-04", event:"East Bay Fall Tour Championship — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"78", par:72, yardage:"5611", finish:"2nd", notes:"Girls 15-18 • 14 pars • level through 8 • second-lowest round to par on record",
    holePars: [4,3,4,4,4,5,3,5,4, 4,4,4,5,3,5,4,3,4],
    holes:    [4,3,4,4,4,5,3,5,5, 4,4,7,6,3,5,5,3,4]},
