@@ -96,7 +96,12 @@ const config = {
    ========================================================================== */
 
 const results = [
-  {date:"2026-10-10", event:"JGANC Monarch Bay — Round 1", tour:"JGANC", score:"88", par:72, tees:"White", finish:"T4", notes:"Round 1 • first time from the white tees • 44 out, 44 in • 6 pars • par 4s cost +12 of the +16"},
+  {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
+   holePars: [4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
+   holes:    [5,4,5,3,6,5,3,5,6, 2,4,7,6,5,6,6,5,5]},
+  {date:"2026-10-10", event:"JGANC Monarch Bay — Round 1", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"T4", notes:"Round 1 • first time from the white tees (74.9/132) • 44 out, 44 in • 6 pars • par 4s cost +12 of the +16",
+   holePars: [4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
+   holes:    [5,5,6,4,6,5,3,5,5, 4,4,6,5,6,4,5,3,7]},
   {date:"2026-10-04", event:"East Bay Fall Tour Championship — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"78", par:72, yardage:"5611", finish:"2nd", notes:"Girls 15-18 • 14 pars • level through 8 • second-lowest round to par on record",
    holePars: [4,3,4,4,4,5,3,5,4, 4,4,4,5,3,5,4,3,4],
    holes:    [4,3,4,4,4,5,3,5,5, 4,4,7,6,3,5,5,3,4]},
@@ -105,7 +110,7 @@ const results = [
    holes:    [7,3,5,4,6,6,3,5,6, 4,4,4,4,3,6,5,4,7],
    holePutts:[4,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null]},
   {date:"2026-09-27", event:"East Bay Fall Local Tour — Las Positas Golf Course", tour:"U.S. Kids Golf", score:"86", par:72, finish:"2nd", notes:"Girls 15-18 • Livermore • second of back-to-back tour days"},
-  {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Gold", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • 42 out, 42 in • 10 pars, no holes worse than double",
+  {date:"2026-09-26", event:"East Bay Fall Local Tour — Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"84", par:72, tees:"Green", yardage:"5502", finish:"3rd", notes:"Girls 15-18 • Green tees (71.6/127) • 42 out, 42 in • 10 pars, no holes worse than double",
    holePars:[4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
    holes:   [4,6,6,3,5,5,3,4,6, 3,5,6,5,4,5,5,5,4]},
   {date:"2026-09-19", event:"East Bay Fall Local Tour — Paradise Valley Golf Course", tour:"U.S. Kids Golf", score:"77", par:72, finish:"1st", notes:"Girls 15-18 • best round to par on record"},
