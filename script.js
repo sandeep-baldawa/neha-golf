@@ -243,7 +243,7 @@ const schedule = [
   {sortDate:"2026-10-10", endDate:"2026-10-11", date:"Oct 10–11, 2026", event:"JGANC Monarch Bay", tour:"JGANC", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Dublin Ranch Golf Course, Dublin — par 63, eleven par 3s", status:"Championship"},
-  {sortDate:"2026-10-24", endDate:"2026-10-25", date:"Oct 24–25, 2026", event:"Halloween Junior Championship: 12–18", tour:"JGANC", venue:"Haggin Oaks", status:"Confirmed"},
+  {sortDate:"2026-10-25", date:"Oct 25, 2026", event:"Peninsula Fall Tour Championship", tour:"U.S. Kids Golf", venue:"The Golf Club at Moffett Field, Mountain View", status:"Registered"},
   {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro", status:"On qualifying"},
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
   {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
