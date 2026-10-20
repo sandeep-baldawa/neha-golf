@@ -355,6 +355,7 @@ function renderHero() {
   const improvement = stats.firstSeasonAvg - stats.currentSeasonAvg;
   setText("heroDelta", improvement.toFixed(1));
   setText("heroSub80Count", stats.sub80);
+  setText("heroCareerLow", stats.careerLow);   // was hardcoded; must track the data
 
   const seasonAverages = stats.seasons.map(year => ({ year, avg: mean(stats.bySeason[year]), n: stats.bySeason[year].length }));
   const worst = Math.max(...seasonAverages.map(s => s.avg));
