@@ -96,12 +96,10 @@ const config = {
    ========================================================================== */
 
 const results = [
-  // Par-63 course (eleven par 3s). Shown in full here, but excluded from the
-  // 18-hole scoring averages, career low and charts, which are par-72 figures —
-  // a 66 off par 63 is not comparable to them. See excludeFromAverages below.
+  // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
+  // other round; the par and to-par columns carry the context.
   {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, finish:"4th",
-   excludeFromAverages:true,
-   notes:"4th of the full EBAL field • best round to par on record (+3) • beat the leading player from Dougherty Valley, California and Monte Vista • par 63, eleven par 3s — excluded from the par-72 averages"},
+   notes:"4th of the full EBAL field • best round to par on record (+3) • beat the leading player from Dougherty Valley, California and Monte Vista • par 63, eleven par 3s"},
   {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
    holePars: [4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
    holes:    [5,4,5,3,6,5,3,5,6, 2,4,7,6,5,6,6,5,5]},
