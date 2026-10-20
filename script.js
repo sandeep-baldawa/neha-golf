@@ -34,6 +34,12 @@ const config = {
   heightFtIn: "",               // e.g. "5'4\"" — coaches ask
   driverCarryYds: "",           // e.g. "205" — coaches ask
 
+  // --- Timeline context ---------------------------------------------------
+  // Appears under the career chart. Empty string = the note does not render.
+  // The chart plots rounds in sequence rather than by date, so a layoff is
+  // invisible without a note like this.
+  timelineNote: "Out with injury from February to June 2026. The career chart plots rounds in sequence rather than by date, so the four-month layoff does not show as a gap.",
+
   // --- Academics ----------------------------------------------------------
   gpaUnweighted: "4.00",
   gpaNote: "Unweighted, through sophomore year",
@@ -563,6 +569,16 @@ const matchDate = m => {
   if (!m.date) return "—";
   return m.datePrecision === "month" ? prettyMonth(m.date) : prettyDate(m.date);
 };
+
+/* Optional one-line context under the career chart (config.timelineNote).
+   Empty or missing = nothing renders. */
+function renderTimelineNote() {
+  const el = $("timelineNote");
+  if (!el) return;
+  const text = (config.timelineNote || "").trim();
+  el.hidden = !text;
+  el.textContent = text;
+}
 
 function renderMatches() {
   const section = $("matches");
@@ -1281,6 +1297,7 @@ $("downloadCsv").addEventListener("click", downloadCsv);
   ["videos", renderVideos],
   ["contact", renderContact],
   ["charts", renderCharts],
+  ["timeline note", renderTimelineNote],
   ["development focus", renderDevelopmentFocus],
   ["round shape", renderRoundShape],
   ["analytics", loadAnalytics],

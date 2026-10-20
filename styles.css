@@ -235,6 +235,17 @@ h3 { font-size: 24px; letter-spacing: -.02em; }
   color: var(--muted);
 }
 
+/* Optional context line under the career chart (config.timelineNote). */
+.chart-note {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.chart-note[hidden] { display: none; }
+
 @keyframes grow { from { transform: scaleX(.04); } to { transform: scaleX(1); } }
 
 /* --- Snapshot bar --------------------------------------------------------- */
