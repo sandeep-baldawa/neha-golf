@@ -96,6 +96,12 @@ const config = {
    ========================================================================== */
 
 const results = [
+  // Par-63 course (eleven par 3s). Shown in full here, but excluded from the
+  // 18-hole scoring averages, career low and charts, which are par-72 figures —
+  // a 66 off par 63 is not comparable to them. See excludeFromAverages below.
+  {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, finish:"4th",
+   excludeFromAverages:true,
+   notes:"4th of the full EBAL field • best round to par on record (+3) • beat the leading player from Dougherty Valley, California and Monte Vista • par 63, eleven par 3s — excluded from the par-72 averages"},
   {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
    holePars: [4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
    holes:    [5,4,5,3,6,5,3,5,6, 2,4,7,6,5,6,6,5,5]},
@@ -302,8 +308,12 @@ function dedupe(rows) {
 
 const allRounds = dedupe(results).sort((a, b) => b.date.localeCompare(a.date));
 
-/* Rounds that count toward averages: complete, numeric. */
+/* Rounds that count toward averages: complete, numeric, and played to a
+   comparable par. Rounds flagged excludeFromAverages (e.g. par-63 high school
+   championships) still appear in the results table but never enter the
+   averages, the career low, the season ladder or either chart. */
 const countingRounds = allRounds
+  .filter(r => !r.excludeFromAverages)
   .filter(r => !String(r.score).includes("*"))
   .map(r => ({ ...r, value: numericScore(r.score) }))
   .filter(r => Number.isFinite(r.value))
@@ -441,7 +451,7 @@ function renderResults(filter = activeFilter) {
       </tr>`;
   }).join("");
 
-  const counting = rows.filter(r => !String(r.score).includes("*"));
+  const counting = rows.filter(r => !r.excludeFromAverages && !String(r.score).includes("*"));
   const avg = counting.length ? mean(counting.map(r => numericScore(r.score))).toFixed(1) : "—";
   setText("resultsCount", filter === "all"
     ? `${counting.length} counting rounds since ${stats.seasons[0]} • career scoring average ${avg}`
