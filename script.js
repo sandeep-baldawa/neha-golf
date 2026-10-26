@@ -104,6 +104,8 @@ const config = {
 const results = [
   // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
   // other round; the par and to-par columns carry the context.
+  {date:"2026-10-26", event:"CIF NCS Division II Championship / Individual Qualifier — Blue Rock Springs West", tour:"High school", score:"84", par:72, tees:"Red", yardage:"4988", finish:"T13",
+   notes:"T13 of 111 • Red tees, 68.4/111 • qualified for the CIF NCS Division 1 Championship"},
   {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, finish:"4th",
    notes:"4th of the full EBAL field • best round to par on record (+3) • par 63, eleven par 3s"},
   {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
@@ -254,7 +256,7 @@ const schedule = [
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Dublin Ranch Golf Course, Dublin — par 63, eleven par 3s", status:"Championship"},
   {sortDate:"2026-10-26", date:"Oct 26, 2026", event:"CIF NCS Division II Championship / Individual Qualifier", tour:"High school", venue:"Blue Rock Springs West, Vallejo — qualified as an individual through EBAL", status:"Qualified"},
-  {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro — top 18 individuals from the Division II qualifier advance", status:"On qualifying"},
+  {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro — qualified T13 at the Division II Individual Qualifier", status:"Qualified"},
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
   {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
   {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
