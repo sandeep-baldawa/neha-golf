@@ -105,7 +105,7 @@ const results = [
   // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
   // other round; the par and to-par columns carry the context.
   {date:"2026-10-26", event:"CIF NCS Division II Championship / Individual Qualifier — Blue Rock Springs West", tour:"High school", score:"84", par:72, tees:"Red", yardage:"4988", finish:"T13",
-   notes:"T13 of 111 • Red tees, 68.4/111 • qualified for the CIF NCS Division 1 Championship"},
+   notes:"T13 of 111 • 10 pars, 15 holes at bogey or better • Red tees, 68.4/111 • qualified for the CIF NCS Division 1 Championship • 84 here vs 105 on the same course in 2024"},
   {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, finish:"4th",
    notes:"4th of the full EBAL field • best round to par on record (+3) • par 63, eleven par 3s"},
   {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
@@ -190,11 +190,15 @@ const results = [
   {date:"2025-03-15", event:"Las Positas", tour:"JGANC", score:"89", notes:""},
   {date:"2024-10-28", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"104", notes:"Round 2"},
   {date:"2024-10-27", event:"Shoreline Golf Links", tour:"U.S. Kids Golf", score:"105", notes:"Round 1"},
+  {date:"2024-09-29", event:"San Ramon Golf Club", tour:"U.S. Kids Golf", score:"93", par:72, finish:"6th", notes:"East Bay Local Tour • Girls 13-14"},
+  {date:"2024-09-28", event:"Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"100", par:72, finish:"4th", notes:"East Bay Local Tour • Girls 13-14"},
+  {date:"2024-09-15", event:"Paradise Valley Golf Course", tour:"U.S. Kids Golf", score:"108", par:72, finish:"4th", notes:"East Bay Local Tour • Girls 13-14"},
   {date:"2024-09-08", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"105", notes:"Round 2"},
   {date:"2024-09-07", event:"Blue Rock Springs West", tour:"U.S. Kids Golf", score:"109", notes:"Round 1"},
   {date:"2024-08-24", event:"San Ramon Golf Club", tour:"U.S. Kids Golf", score:"101", notes:"San Francisco Local Tour"},
   {date:"2024-08-17", event:"Coyote Creek Golf Club", tour:"U.S. Kids Golf", score:"113", notes:"San Francisco Local Tour"},
   {date:"2024-08-05", event:"Presidio Golf Course", tour:"U.S. Kids Golf", score:"114", notes:"San Francisco Local Tour"},
+  {date:"2024-05-25", event:"Monarch Bay Golf Club", tour:"U.S. Kids Golf", score:"120", par:72, finish:"8th", notes:"East Bay Local Tour • Girls 13-14 • earliest round on record"},
 ];
 
 /* ==========================================================================
