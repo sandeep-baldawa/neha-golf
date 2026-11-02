@@ -102,12 +102,14 @@ const config = {
    ========================================================================== */
 
 const results = [
-  // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
-  // other round; the par and to-par columns carry the context.
   {date:"2026-10-26", event:"CIF NCS Division II Championship / Individual Qualifier — Blue Rock Springs West", tour:"High school", score:"84", par:72, tees:"Red", yardage:"4988", finish:"T13",
    notes:"T13 of 111 • 10 pars, 15 holes at bogey or better • Red tees, 68.4/111 • qualified for the CIF NCS Division 1 Championship • 84 here vs 105 on the same course in 2024"},
-  {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, finish:"4th",
-   notes:"4th of the full EBAL field • best round to par on record (+3) • par 63, eleven par 3s"},
+  // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
+  // other round; the par and to-par columns carry the context.
+  // Tee comes from the verified Aug 26 2026 EBAL match card at this course:
+  // White, par 31 / 2,109 yds over nine — half of White's par 63 / 4,505 yds.
+  {date:"2026-10-19", event:"EBAL Championship — Dublin Ranch Golf Course", tour:"High school", score:"66", par:63, tees:"White", yardage:"4505", finish:"4th",
+   notes:"4th of the full EBAL field • best round to par on record (+3) • par 63, eleven par 3s • White tees 66.8/110"},
   {date:"2026-10-11", event:"JGANC Monarch Bay — Round 2", tour:"JGANC", score:"88", par:72, tees:"White", yardage:"6004", finish:"4th", notes:"Round 2 • 42 out, 46 in • birdie on the 129-yard 10th • 36-hole total 176 (+32), 4th of 8 • White tees 74.9/132",
    holePars: [4,4,4,3,5,4,3,4,4, 3,4,5,5,4,4,5,3,4],
    holes:    [5,4,5,3,6,5,3,5,6, 2,4,7,6,5,6,6,5,5]},
@@ -156,7 +158,7 @@ const results = [
   {date:"2025-11-08", event:"Fairfield Junior Series #4 — Paradise Valley", tour:"JGANC", score:"88", finish:"14th", notes:"Round 1 • 175 total"},
   {date:"2025-10-25", event:"Peninsula Local Tour — San Ramon Golf Club", tour:"U.S. Kids Golf", score:"80", par:72, finish:"1st", notes:"Girls 15-18"},
   {date:"2025-11-03", event:"NCS Division I Championship", tour:"High school", score:"77", notes:"Low score for Foothill by 13 strokes • team 446 • 5 off the individual winner"},
-  {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High school", score:"77", par:63, notes:"Par-63 layout — eleven par 3s"},
+  {date:"2025-10-01", event:"EBAL Championship — Dublin Ranch", tour:"High school", score:"77", par:63, tees:"White", yardage:"4505", notes:"Par-63 layout — eleven par 3s • White tees 66.8/110"},
   {date:"2025-09-07", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"95", notes:"Round 2"},
   {date:"2025-09-06", event:"Silicon Valley Autumn Series #1 — Bay View", tour:"JGANC", score:"91", notes:"Round 1"},
   {date:"2025-08-24", event:"Fairfield Junior Series #3 — Rancho Solano", tour:"JGANC", score:"81", notes:"Round 2"},
