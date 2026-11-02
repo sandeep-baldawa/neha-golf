@@ -102,6 +102,13 @@ const config = {
    ========================================================================== */
 
 const results = [
+  // Shotgun start from hole 3, so the round ran 3→18 then 1→2. The five holes
+  // that had cost her most across three previous visits here — 3, 9, 12, 17
+  // and 18 — played two under par between them.
+  {date:"2026-11-02", event:"CIF NCS Division 1 Championship — Monarch Bay (Tony Lema)", tour:"High school", score:"77", par:71, tees:"Red", yardage:"5130",
+   notes:"Equals her career best on a full-length course • best at Monarch Bay by 4 • 3 birdies (3rd, 9th, 14th) • 8 pars • Red tees 69.8/119 • individual qualifying cut fell at 74",
+   holePars: [4,4,4,3,5,4,3,4,4, 3,4,4,5,4,4,5,3,4],
+   holes:    [5,5,3,3,6,5,4,6,3, 4,4,4,6,3,4,5,3,4]},
   {date:"2026-10-26", event:"CIF NCS Division II Championship / Individual Qualifier — Blue Rock Springs West", tour:"High school", score:"84", par:72, tees:"Red", yardage:"4988", finish:"T13",
    notes:"T13 of 111 • 10 pars, 15 holes at bogey or better • Red tees, 68.4/111 • qualified for the CIF NCS Division 1 Championship • 84 here vs 105 on the same course in 2024"},
   // Par-63 course (eleven par 3s). Counted in the 18-hole averages like any
@@ -659,7 +666,7 @@ function renderHighlights() {
     {
       kicker: "CAREER LOW",
       value: String(stats.careerLow),
-      body: "66 (+3) at the EBAL Championship, Oct. 19 2026 — Dublin Ranch's par-63 layout, eleven par 3s. Her low on a full-length course is 77, at the CIF North Coast Section Division I Championship at Windsor, Nov. 3 2025.",
+      body: "66 (+3) at the EBAL Championship, Oct. 19 2026 — Dublin Ranch's par-63 layout, eleven par 3s. Her low on a full-length course is 77, shot three times: Windsor (Nov. 2025), Paradise Valley (Sep. 2026) and the CIF North Coast Section Division 1 Championship at Monarch Bay (Nov. 2026).",
     },
     {
       kicker: "HIGH SCHOOL",
