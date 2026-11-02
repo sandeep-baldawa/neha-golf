@@ -261,13 +261,14 @@ const schedule = [
   {sortDate:"2026-10-10", endDate:"2026-10-11", date:"Oct 10–11, 2026", event:"JGANC Monarch Bay", tour:"JGANC", venue:"Monarch Bay Golf Club, San Leandro", status:"Registered"},
   {sortDate:"2026-10-14", date:"Oct 14, 2026", event:"EBAL match at Amador Valley (away)", tour:"High school", venue:"League match", status:"Scheduled"},
   {sortDate:"2026-10-19", date:"Oct 19, 2026", event:"EBAL Championship", tour:"High school", venue:"Dublin Ranch Golf Course, Dublin — par 63, eleven par 3s", status:"Championship"},
-  {sortDate:"2026-10-26", date:"Oct 26, 2026", event:"CIF NCS Division II Championship / Individual Qualifier", tour:"High school", venue:"Blue Rock Springs West, Vallejo — qualified as an individual through EBAL", status:"Qualified"},
-  {sortDate:"2026-11-02", date:"Nov 2, 2026", event:"CIF NCS Division 1 Championship", tour:"High school", venue:"Monarch Bay Golf Club, San Leandro — qualified T13 at the Division II Individual Qualifier", status:"Qualified"},
+  // The 2026 high-school season closed with the CIF NCS Division 1
+  // Championship on Nov 2. That row and the Division II qualifier have been
+  // removed, along with the NorCal (Nov 9) and State (Nov 18) entries that
+  // were contingent on advancing. The played rounds live in `results`.
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
-  {sortDate:"2026-11-09", date:"Nov 9, 2026", event:"CIF NorCal Regional Championship", tour:"High school", venue:"On advancing from NCS", status:"On advancing"},
   {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
-  {sortDate:"2026-11-18", date:"Nov 18, 2026", event:"CIF State Championship", tour:"High school", venue:"On advancing from NorCal", status:"On advancing"},
   {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Holiday Series I — Del Monte", tour:"JTNC", venue:"Del Monte Golf Club, Monterey", status:"Registered"},
+  {sortDate:"2026-12-05", endDate:"2026-12-06", date:"Dec 5–6, 2026", event:"Fairfield Junior Championship: 12–18", tour:"JGANC", venue:"Paradise Valley, Fairfield", status:"Registered"},
 ];
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
