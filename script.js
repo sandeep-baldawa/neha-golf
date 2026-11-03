@@ -105,8 +105,8 @@ const results = [
   // Shotgun start from hole 3, so the round ran 3→18 then 1→2. The five holes
   // that had cost her most across three previous visits here — 3, 9, 12, 17
   // and 18 — played two under par between them.
-  {date:"2026-11-02", event:"CIF NCS Division 1 Championship — Monarch Bay (Tony Lema)", tour:"High school", score:"77", par:71, tees:"Red", yardage:"5130",
-   notes:"Equals her career best on a full-length course • best at Monarch Bay by 4 • 3 birdies (3rd, 9th, 14th) • 8 pars • Red tees 69.8/119 • individual qualifying cut fell at 74",
+  {date:"2026-11-02", event:"CIF NCS Division 1 Championship — Monarch Bay (Tony Lema)", tour:"High school", score:"77", par:71, tees:"Red", yardage:"5130", finish:"Top 16",
+   notes:"Top 16 of a 143-player field • equals her career best on a full-length course • best at Monarch Bay by 4 • 3 birdies (3rd, 9th, 14th) • 8 pars • Red tees 69.8/119 • individual qualifying cut fell at 74",
    holePars: [4,4,4,3,5,4,3,4,4, 3,4,4,5,4,4,5,3,4],
    holes:    [5,5,3,3,6,5,4,6,3, 4,4,4,6,3,4,5,3,4]},
   {date:"2026-10-26", event:"CIF NCS Division II Championship / Individual Qualifier — Blue Rock Springs West", tour:"High school", score:"84", par:72, tees:"Red", yardage:"4988", finish:"T13",
