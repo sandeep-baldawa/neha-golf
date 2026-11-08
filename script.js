@@ -102,6 +102,10 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-11-07", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", score:"80", par:72, tees:"Gold",
+   notes:"Round 1 • Gold tees 73.5/127 • 11 pars, one hole worse than bogey all day • lowest round in a 36-hole ranked event this year • 88 in the same event here last November",
+   holePars: [5,4,3,5,4,4,4,3,4, 5,4,3,4,4,3,5,4,4],
+   holes:    [6,4,5,5,4,4,4,4,5, 5,5,3,5,4,3,5,4,5]},
   // Shotgun start from hole 3, so the round ran 3→18 then 1→2. The five holes
   // that had cost her most across three previous visits here — 3, 9, 12, 17
   // and 18 — played two under par between them.
@@ -275,7 +279,7 @@ const schedule = [
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
   {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
   {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Holiday Series I — Del Monte", tour:"JTNC", venue:"Del Monte Golf Club, Monterey", status:"Registered"},
-  {sortDate:"2026-12-05", endDate:"2026-12-06", date:"Dec 5–6, 2026", event:"Fairfield Junior Championship: 12–18", tour:"JGANC", venue:"Paradise Valley, Fairfield", status:"Registered"},
+  {sortDate:"2026-12-05", endDate:"2026-12-06", date:"Dec 5–6, 2026", event:"Fairfield Junior Championship: 12–18", tour:"JGANC", venue:"Paradise Valley, Fairfield", status:"Waitlist"},
 ];
 
 /* Sorted by sortDate (the first day of the event) so a new entry can be pasted
