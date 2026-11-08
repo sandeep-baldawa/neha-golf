@@ -277,7 +277,6 @@ const schedule = [
   // removed, along with the NorCal (Nov 9) and State (Nov 18) entries that
   // were contingent on advancing. The played rounds live in `results`.
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
-  {sortDate:"2026-11-15", date:"Nov 15, 2026", event:"Monterey Fall Local Tour", tour:"U.S. Kids Golf", venue:"Del Monte Golf Course, Monterey", status:"Registered"},
   {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Holiday Series I — Del Monte", tour:"JTNC", venue:"Del Monte Golf Club, Monterey", status:"Registered"},
   {sortDate:"2026-12-05", endDate:"2026-12-06", date:"Dec 5–6, 2026", event:"Fairfield Junior Championship: 12–18", tour:"JGANC", venue:"Paradise Valley, Fairfield", status:"Waitlist"},
 ];
