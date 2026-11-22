@@ -102,6 +102,10 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-11-21", event:"Central Valley Fall Local Tour — Swenson Park Golf Club", tour:"U.S. Kids Golf", score:"82", par:72, yardage:"5568", finish:"2nd",
+   notes:"Girls 15-18 • 2nd of 3 • 43 out, 39 in • eagles on the par-5 12th and 17th, birdie on the par-5 10th • 3 under for holes 10–17 • par 5s played 4 under",
+   holePars: [5,3,4,4,3,4,4,4,3, 5,4,5,3,4,4,4,5,4],
+   holes:    [6,3,5,5,4,5,5,6,4, 4,5,3,3,4,5,4,3,8]},
   {date:"2026-11-08", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", score:"83", par:72, tees:"Gold", finish:"T6",
    notes:"Round 2 • 36-hole total 163, T6 of 9 in Girls 16-18 • back nine 38 (+2) with birdies on the 13th and a 2 on the par-3 15th, after a 45 on the front • best 36-hole total in a ranked event this year by 4 • 175 in the same event here last November",
    holePars: [5,4,3,5,4,4,4,3,4, 5,4,3,4,4,3,5,4,4],
