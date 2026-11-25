@@ -14,5 +14,20 @@
       "https://tournaments.uskidsgolf.com/tournaments/local/find-local-tour/284864/bay-area-ca"
     ],
     "extra_event_urls": []
+  },
+  "rankings": {
+    "tugr": {
+      "enabled": true,
+      "api_base": "https://tugr.org/api/plus2",
+      "player_id": "neha baldawa : pleasanton, ca; usa (2028)",
+      "category": "JUNIOR_GIRLS",
+      "_note": "TUGR is a React app; its HTML carries no data. This is the JSON API the page itself calls. player_id stops at the graduation year and the division travels separately as category."
+    },
+    "jgs": {
+      "enabled": false,
+      "profile_url": "",
+      "surname": "Baldawa",
+      "_note": "Unverified. Set profile_url, run --dry-run, and only enable once the printed numbers match the dashboard."
+    }
   }
 }

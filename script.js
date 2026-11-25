@@ -94,6 +94,20 @@ const config = {
 };
 
 /* ==========================================================================
+   Ranking snapshot. Everything between the RANKINGS markers is rewritten by
+   scripts/fetch-rankings.py on the daily run — do not hand-edit it, and do not
+   move the markers.
+   ========================================================================== */
+/* RANKINGS:BEGIN */
+const rankings = {
+  updated: "",
+  jgs: {},
+  tugr: {},
+  history: []
+};
+/* RANKINGS:END */
+
+/* ==========================================================================
    Tournament results. Newest anywhere in the list is fine — they get sorted.
    Optional fields: tees, yardage, finish, par. Leave out what you do not know;
    the table prints a dash rather than a guess.
