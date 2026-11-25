@@ -108,13 +108,13 @@ const rankings = {
   "updated": "2026-11-25",
   "jgs": {
     "rank_overall": 3317,
-    "gross_scoring_average": 86.9,
+    "gross_scoring_average": 85.4,
     "class_rank": 797,
     "state_rank": 519,
     "state_class_rank": 115,
-    "events": 10,
+    "events": 11,
     "strength_of_tournaments": 94.7,
-    "scoring_diff": 11.17
+    "scoring_diff": 10.2
   },
   "tugr": {
     "global": 3402,
@@ -132,13 +132,13 @@ const rankings = {
     {
       "date": "2026-11-25",
       "jgs.rank_overall": 3317,
-      "jgs.gross_scoring_average": 86.9,
+      "jgs.gross_scoring_average": 85.4,
       "jgs.class_rank": 797,
       "jgs.state_rank": 519,
       "jgs.state_class_rank": 115,
-      "jgs.events": 10,
+      "jgs.events": 11,
       "jgs.strength_of_tournaments": 94.7,
-      "jgs.scoring_diff": 11.17,
+      "jgs.scoring_diff": 10.2,
       "tugr.global": 3402,
       "tugr.relative_strokes": 23.4681693,
       "tugr.country": 2991,
