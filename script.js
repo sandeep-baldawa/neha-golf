@@ -9,7 +9,9 @@
 
 const config = {
   // --- Contact ------------------------------------------------------------
-  recruitingEmail: "nehabaldawa2020@gmail.com",
+  // Neha's own address was removed on 2026-11-24. Leaving this empty hides
+  // the contact section and its nav link entirely.
+  recruitingEmail: "",
   emailOwner: "",
 
   // --- Optional. Each one appears only once it has a value ----------------

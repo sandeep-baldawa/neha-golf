@@ -287,7 +287,7 @@ Set these as repository secrets (Settings -> Secrets and variables -> Actions):
 | `MAIL_PORT` | `587` |
 | `MAIL_USERNAME` | the sending Gmail address |
 | `MAIL_PASSWORD` | a Gmail **app password**, not the account password |
-| `MAIL_TO` | `sandeepbaldawa@gmail.com,ruchita.rathi@gmail.com,nehabaldawa2020@gmail.com` |
+| `MAIL_TO` | Comma-separated recipient list. Set as a repository secret; do not record real addresses here. |
 
 Recipients live in the secret rather than in the code, since this repository is
 public.
