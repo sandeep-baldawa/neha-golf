@@ -87,6 +87,11 @@ const config = {
   // Official U.S. Kids Golf player URL only.
   priorityStatusUrl: "",
 
+  // --- Publish the rankings section? --------------------------------------
+  // The fetcher collects these figures daily whatever this is set to, so the
+  // history keeps building. This only controls whether the page shows them.
+  showRankings: true,
+
   // --- Publish the JGS rank number? ---------------------------------------
   // Off by default. The linked JGS profile carries the current ranking.
   showJgsRankNumber: false,
@@ -100,10 +105,35 @@ const config = {
    ========================================================================== */
 /* RANKINGS:BEGIN */
 const rankings = {
-  updated: "",
-  jgs: {},
-  tugr: {},
-  history: []
+  "updated": "2026-11-25",
+  "jgs": {},
+  "tugr": {
+    "global": 3402,
+    "relative_strokes": 23.4681693,
+    "country": 2991,
+    "state": 698,
+    "county": 32,
+    "hometown": 9,
+    "rounds": 54,
+    "competitors_played": 99,
+    "competitors_beaten": 22,
+    "win_rate": 22.2
+  },
+  "history": [
+    {
+      "date": "2026-11-25",
+      "tugr.global": 3402,
+      "tugr.relative_strokes": 23.4681693,
+      "tugr.country": 2991,
+      "tugr.state": 698,
+      "tugr.county": 32,
+      "tugr.hometown": 9,
+      "tugr.rounds": 54,
+      "tugr.competitors_played": 99,
+      "tugr.competitors_beaten": 22,
+      "tugr.win_rate": 22.2
+    }
+  ]
 };
 /* RANKINGS:END */
 
@@ -802,6 +832,118 @@ function renderContact() {
     "College coaches at any level are welcome to get in touch.");
 }
 
+function ordinal(n) {
+  const s = ["th", "st", "nd", "rd"], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function rankTrend(path) {
+  /* Compares against the oldest history point inside 35 days. Returns null
+     when there is nothing to compare against, so a fresh install prints no
+     arrow rather than a misleading zero. History points carry flat keys. */
+  const h = Array.isArray(rankings.history) ? rankings.history : [];
+  if (h.length < 2) return null;
+  const cutoff = Date.now() - 35 * 864e5;
+  const older = h.filter(p => Date.parse(p.date) >= cutoff)[0] || h[0];
+  const [group, key] = path.split(".");
+  const was = older && older[path];
+  const now = rankings[group] && rankings[group][key];
+  if (typeof was !== "number" || typeof now !== "number") return null;
+  const delta = now - was;
+  return Math.abs(delta) < 0.005 ? null : delta;
+}
+
+function renderRankings() {
+  const section = $("rankings");
+  if (!section) return;
+  const j = rankings.jgs || {};
+  const t = rankings.tugr || {};
+  if (!config.showRankings || !rankings.updated ||
+      (!Object.keys(j).length && !Object.keys(t).length)) {
+    section.hidden = true;
+    return;
+  }
+
+  /* Lower is better for every figure here, so a negative delta is progress. */
+  const since = path => {
+    const d = rankTrend(path);
+    if (d == null) return "";
+    return d < 0 ? ` Down ${Math.abs(d).toFixed(2)} in the last month.`
+                 : ` Up ${d.toFixed(2)} in the last month.`;
+  };
+
+  const cards = [];
+  if (typeof j.scoring_diff === "number") {
+    cards.push({
+      kicker: "JGS SCORING DIFFERENTIAL",
+      value: j.scoring_diff.toFixed(2),
+      body: "Her counting rounds measured against course rating, so a hard course counts for more. Lower is better." + since("jgs.scoring_diff"),
+    });
+  }
+  if (typeof j.gross_scoring_average === "number") {
+    cards.push({
+      kicker: "GROSS SCORING AVERAGE",
+      value: j.gross_scoring_average.toFixed(1),
+      body: (typeof j.events === "number" ? `Across ${j.events} ranked events on Junior Golf Scoreboard.` : "Junior Golf Scoreboard.") + since("jgs.gross_scoring_average"),
+    });
+  }
+  if (typeof t.relative_strokes === "number") {
+    cards.push({
+      kicker: "TUGR RELATIVE STROKES",
+      value: t.relative_strokes.toFixed(2),
+      body: (typeof t.rounds === "number" ? `${t.rounds} tournament rounds in the ranking.` : "The Ultimate Golf Ranking.") + since("tugr.relative_strokes"),
+    });
+  }
+  if (typeof t.competitors_beaten === "number" && typeof t.competitors_played === "number") {
+    cards.push({
+      kicker: "HEAD TO HEAD",
+      value: `${t.competitors_beaten} of ${t.competitors_played}`,
+      body: "Ranked opponents beaten across every event on record.",
+    });
+  }
+  if (typeof t.county === "number" || typeof t.hometown === "number") {
+    const where = [];
+    if (typeof t.county === "number") where.push(`${ordinal(t.county)} in Alameda County`);
+    if (typeof t.hometown === "number") where.push(`${ordinal(t.hometown)} in Pleasanton`);
+    cards.push({
+      kicker: "REGIONAL STANDING",
+      value: where[0].split(" in ")[0],
+      body: where.join(", ") + ", on The Ultimate Golf Ranking.",
+    });
+  }
+  if (config.showJgsRankNumber) {
+    if (typeof j.rank_overall === "number") {
+      cards.push({
+        kicker: "JGS RANK",
+        value: j.rank_overall.toLocaleString(),
+        body: typeof j.class_rank === "number" ? `${j.class_rank.toLocaleString()} in the class of 2028.` : "Junior Golf Scoreboard, overall.",
+      });
+    }
+    if (typeof t.global === "number") {
+      cards.push({
+        kicker: "TUGR RANK",
+        value: t.global.toLocaleString(),
+        body: typeof t.state === "number" ? `${t.state.toLocaleString()} in California.` : "The Ultimate Golf Ranking, global.",
+      });
+    }
+  }
+
+  if (!cards.length) { section.hidden = true; return; }
+  section.hidden = false;
+  $("rankingGrid").innerHTML = cards.map(card => `
+    <article class="highlight-card">
+      <span class="highlight-kicker">${esc(card.kicker)}</span>
+      <strong>${esc(card.value)}</strong>
+      <p>${esc(card.body)}</p>
+    </article>`).join("");
+  const sources = [];
+  if (Object.keys(j).length) sources.push("Junior Golf Scoreboard");
+  if (Object.keys(t).length) sources.push("TUGR");
+  setText("rankingsIntro", `Refreshed automatically each morning from ${sources.join(" and ")}.`);
+  setText("rankingUpdated",
+    `Checked ${prettyDate(rankings.updated)}. Pulled automatically each morning; the linked profiles are authoritative.`);
+}
+
 /* ==========================================================================
    Charts
    ========================================================================== */
@@ -1350,6 +1492,7 @@ $("downloadCsv").addEventListener("click", downloadCsv);
   ["matches", renderMatches],
   ["profile", renderProfile],
   ["highlights", renderHighlights],
+  ["rankings", renderRankings],
   ["videos", renderVideos],
   ["contact", renderContact],
   ["charts", renderCharts],
