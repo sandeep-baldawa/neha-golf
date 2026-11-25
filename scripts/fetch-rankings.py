@@ -166,6 +166,69 @@ def fetch_jgs(cfg: dict) -> dict:
     return out
 
 
+# ---------------------------------------------------------------------------
+# Manual JGS entry
+# ---------------------------------------------------------------------------
+
+# Junior Golf Scoreboard's player dashboard sits behind a paid subscription, so
+# it is not fetched. These figures are typed in from the dashboard instead,
+# which in practice means a handful of times a year, after an event posts.
+JGS_ALIASES = {
+    "rank": "rank_overall",
+    "gross": "gross_scoring_average",
+    "class": "class_rank",
+    "state": "state_rank",
+    "state_class": "state_class_rank",
+    "events": "events",
+    "sot": "strength_of_tournaments",
+    "diff": "scoring_diff",
+    "yards": "average_yardage",
+}
+
+# Light sanity bounds. The point is not validation for its own sake — it is
+# that a fat-fingered 1117 instead of 11.17 would publish nonsense to a page
+# college coaches read, and there is no review step between here and live.
+JGS_BOUNDS = {
+    "rank_overall": (1, 100000),
+    "class_rank": (1, 100000),
+    "state_rank": (1, 100000),
+    "state_class_rank": (1, 100000),
+    "events": (0, 200),
+    "gross_scoring_average": (50, 130),
+    "scoring_diff": (0, 60),
+    "strength_of_tournaments": (0, 300),
+    "average_yardage": (3000, 8000),
+}
+
+
+def parse_set_jgs(pairs: list[str]) -> dict:
+    """Turn `diff=11.17 rank=3317` into the stored field names."""
+    out: dict = {}
+    for pair in pairs:
+        if "=" not in pair:
+            raise ValueError(f"{pair!r} is not key=value")
+        key, _, raw = pair.partition("=")
+        key = key.strip().lower()
+        field = JGS_ALIASES.get(key)
+        if not field:
+            raise ValueError(
+                f"unknown field {key!r}. Known: " + ", ".join(sorted(JGS_ALIASES))
+            )
+        raw = raw.strip().replace(",", "")
+        try:
+            value = float(raw) if "." in raw else int(raw)
+        except ValueError:
+            raise ValueError(f"{key}={raw!r} is not a number")
+        lo, hi = JGS_BOUNDS[field]
+        if not (lo <= value <= hi):
+            raise ValueError(
+                f"{key}={value} is outside the sane range {lo}-{hi}. "
+                "Check for a misplaced decimal point."
+            )
+        out[field] = value
+    return out
+
+
 def read_existing(js: str) -> dict:
     try:
         start = js.index(BEGIN) + len(BEGIN)
@@ -191,10 +254,40 @@ def write_block(js: str, data: dict) -> str:
     return js[:start] + "\nconst rankings = " + json.dumps(data, indent=2) + ";\n" + js[end:]
 
 
+def finish(js: str, merged: dict, history: list, dry_run: bool,
+           hard_failures: list) -> int:
+    """Append today's history point, then write or print."""
+    today = merged["updated"]
+    # History carries flat keys so the renderer can look one up by path.
+    point = {"date": today}
+    for group in ("jgs", "tugr"):
+        for key, value in (merged.get(group) or {}).items():
+            point[f"{group}.{key}"] = value
+    history = [h for h in history if h.get("date") != today]
+    history.append(point)
+    history.sort(key=lambda h: h.get("date", ""))
+    merged["history"] = history[-HISTORY_MAX:]
+
+    if dry_run:
+        print(json.dumps(merged, indent=2))
+        print("\n--dry-run: script.js not modified")
+        return 1 if hard_failures else 0
+
+    SCRIPT_JS.write_text(write_block(js, merged))
+    counts = ", ".join(f"{g} ({len(merged.get(g) or {})} fields)"
+                       for g in ("jgs", "tugr") if merged.get(g))
+    print(f"Wrote rankings for {today}: {counts}")
+    print(f"History points: {len(merged['history'])}")
+    return 1 if hard_failures else 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true",
                     help="print what would be written and change nothing")
+    ap.add_argument("--set-jgs", nargs="+", metavar="KEY=VALUE", default=None,
+                    help="type JGS figures in by hand, e.g. diff=11.17 gross=86.9 "
+                         "rank=3317 class=797 events=10. Skips the network entirely.")
     args = ap.parse_args()
 
     cfg = json.loads(SOURCES_JSON.read_text()).get("rankings", {})
@@ -208,6 +301,22 @@ def main() -> int:
 
     results: dict = {}
     hard_failures: list[str] = []
+
+    if args.set_jgs:
+        # Merged over whatever is already stored, so a partial update is fine.
+        try:
+            typed = parse_set_jgs(args.set_jgs)
+        except ValueError as e:
+            print(f"jgs: {e}")
+            return 2
+        results["jgs"] = {**(previous.get("jgs") or {}), **typed}
+        print("jgs: set by hand — " + ", ".join(f"{k}={v}" for k, v in typed.items()))
+        merged = {
+            "updated": date.today().isoformat(),
+            "jgs": results["jgs"],
+            "tugr": previous.get("tugr", {}),
+        }
+        return finish(js, merged, previous.get("history") or [], args.dry_run, [])
 
     for name, fn in (("tugr", fetch_tugr), ("jgs", fetch_jgs)):
         source = cfg.get(name) or {}
@@ -227,32 +336,12 @@ def main() -> int:
         print("No source produced usable figures; script.js left untouched.")
         return 1 if hard_failures else 0
 
-    today = date.today().isoformat()
     merged = {
-        "updated": today,
+        "updated": date.today().isoformat(),
         "jgs": results.get("jgs", previous.get("jgs", {})),
         "tugr": results.get("tugr", previous.get("tugr", {})),
     }
-
-    point = {"date": today}
-    for group in ("jgs", "tugr"):
-        for key, value in merged[group].items():
-            point[f"{group}.{key}"] = value
-    history = [h for h in history if h.get("date") != today]
-    history.append(point)
-    history.sort(key=lambda h: h.get("date", ""))
-    merged["history"] = history[-HISTORY_MAX:]
-
-    if args.dry_run:
-        print(json.dumps(merged, indent=2))
-        print("\n--dry-run: script.js not modified")
-        return 1 if hard_failures else 0
-
-    SCRIPT_JS.write_text(write_block(js, merged))
-    print(f"Wrote rankings for {today}: "
-          + ", ".join(f"{k} ({len(v)} fields)" for k, v in results.items()))
-    print(f"History points: {len(merged['history'])}")
-    return 1 if hard_failures else 0
+    return finish(js, merged, history, args.dry_run, hard_failures)
 
 
 if __name__ == "__main__":

@@ -106,7 +106,16 @@ const config = {
 /* RANKINGS:BEGIN */
 const rankings = {
   "updated": "2026-11-25",
-  "jgs": {},
+  "jgs": {
+    "rank_overall": 3317,
+    "gross_scoring_average": 86.9,
+    "class_rank": 797,
+    "state_rank": 519,
+    "state_class_rank": 115,
+    "events": 10,
+    "strength_of_tournaments": 94.7,
+    "scoring_diff": 11.17
+  },
   "tugr": {
     "global": 3402,
     "relative_strokes": 23.4681693,
@@ -122,6 +131,14 @@ const rankings = {
   "history": [
     {
       "date": "2026-11-25",
+      "jgs.rank_overall": 3317,
+      "jgs.gross_scoring_average": 86.9,
+      "jgs.class_rank": 797,
+      "jgs.state_rank": 519,
+      "jgs.state_class_rank": 115,
+      "jgs.events": 10,
+      "jgs.strength_of_tournaments": 94.7,
+      "jgs.scoring_diff": 11.17,
       "tugr.global": 3402,
       "tugr.relative_strokes": 23.4681693,
       "tugr.country": 2991,
@@ -936,10 +953,14 @@ function renderRankings() {
       <strong>${esc(card.value)}</strong>
       <p>${esc(card.body)}</p>
     </article>`).join("");
-  const sources = [];
-  if (Object.keys(j).length) sources.push("Junior Golf Scoreboard");
-  if (Object.keys(t).length) sources.push("TUGR");
-  setText("rankingsIntro", `Refreshed automatically each morning from ${sources.join(" and ")}.`);
+  /* TUGR has a public API and is fetched daily. The Junior Golf Scoreboard
+     dashboard is behind a paid subscription, so those figures are typed in —
+     the wording must not imply otherwise. */
+  const hasJ = Object.keys(j).length, hasT = Object.keys(t).length;
+  setText("rankingsIntro",
+    hasJ && hasT ? "TUGR figures refresh automatically each morning. Junior Golf Scoreboard figures are entered from its subscriber dashboard."
+    : hasT ? "Refreshed automatically each morning from TUGR."
+    : "From the Junior Golf Scoreboard subscriber dashboard.");
   setText("rankingUpdated",
     `Checked ${prettyDate(rankings.updated)}. Pulled automatically each morning; the linked profiles are authoritative.`);
 }
