@@ -71,12 +71,13 @@ const config = {
   priorityStatus: {
     level: "8",
     division: "Girls 15-18",
-    valid: "Mar 2026 – Feb 2027",
+    valid: "Mar 2026 – Feb 2028",
     // The finish that earned it is listed under tourFinishes below.
   },
 
   // Season-long local tour finishes. Newest first.
   tourFinishes: [
+    {finish: "2nd", tour: "San Francisco Local Tour", season: "Fall 2026", division: "Girls 15-18"},
     {finish: "1st", tour: "Peninsula Local Tour", season: "Fall 2025", division: "Girls 15-18"},
     {finish: "2nd", tour: "San Francisco Local Tour", season: "Spring 2025", division: "Girls 15-18"},
   ],
@@ -102,6 +103,14 @@ const config = {
    ========================================================================== */
 
 const results = [
+  {date:"2026-11-24", event:"Holiday Series I — Del Monte", tour:"JTNC", score:"84", par:72, tees:"White", yardage:"6085", finish:"DQ",
+   notes:"Round 2 • 82 and 84 for a 36-hole total of 166, the two lowest rounds she has played at Del Monte — 201 for the same two days in 2025 • back nine 40 — her best nine at Del Monte: five pars, four bogeys, no doubles • disqualified under Rule 6.1b for playing from the wrong teeing area on one hole, where two tee boxes were both white; she played from the longer of the two • both rounds reported • 96 in the same event here last November",
+   holePars: [5,4,4,3,4,3,4,4,5, 4,4,3,5,3,4,4,5,4],
+   holes:    [7,4,5,3,4,4,6,5,6, 4,4,4,5,4,4,5,6,4]},
+  {date:"2026-11-23", event:"Holiday Series I — Del Monte", tour:"JTNC", score:"82", par:72, tees:"White", yardage:"6085",
+   notes:"Round 1 • lowest scoring differential on record • two birdies, seven pars, nothing worse than a double all day • T17 of 34 after round one • 105 in the same event here last November, and 201 for the two days",
+   holePars: [5,4,4,3,4,3,4,4,5, 4,4,3,5,3,4,4,5,4],
+   holes:    [5,4,5,3,3,4,5,6,5, 4,5,4,4,3,4,5,7,6]},
   {date:"2026-11-21", event:"Central Valley Fall Local Tour — Swenson Park Golf Club", tour:"U.S. Kids Golf", score:"82", par:72, yardage:"5568", finish:"2nd",
    notes:"Girls 15-18 • 2nd of 3 • 43 out, 39 in • eagles on the par-5 12th and 17th, birdie on the par-5 10th • 3 under for holes 10–17 • par 5s played 4 under",
    holePars: [5,3,4,4,3,4,4,4,3, 5,4,5,3,4,4,4,5,4],
@@ -285,9 +294,7 @@ const schedule = [
   // removed, along with the NorCal (Nov 9) and State (Nov 18) entries that
   // were contingent on advancing. The played rounds live in `results`.
   {sortDate:"2026-11-07", endDate:"2026-11-08", date:"Nov 7–8, 2026", event:"Paradise Valley Junior #4: 12–18", tour:"JGANC", venue:"Paradise Valley", status:"Confirmed"},
-  {sortDate:"2026-11-23", endDate:"2026-11-24", date:"Nov 23–24, 2026", event:"Holiday Series I — Del Monte", tour:"JTNC", venue:"Del Monte Golf Club, Monterey", status:"Registered"},
   {sortDate:"2026-12-05", endDate:"2026-12-06", date:"Dec 5–6, 2026", event:"Fairfield Junior Championship: 12–18", tour:"JGANC", venue:"Paradise Valley, Fairfield", status:"Registered"},
-  {sortDate:"2026-12-12", date:"Dec 12, 2026", event:"Winter Local Tour", tour:"U.S. Kids Golf", venue:"Coyote Creek Golf Club, Morgan Hill", status:"Registered"},
   // The San Francisco City Championship runs over two weekends: stroke-play
   // qualifying at Lincoln Park, then match play across Lincoln Park and TPC
   // Harding Park. 111th playing. Entered in the Women's Championship division.
