@@ -31,7 +31,14 @@ jobs:
       - name: Check public result pages
         run: python scripts/update-results.py
 
-      - name: Commit any new rounds
+      # Allowed to fail without losing any results the step above found. A
+      # parse failure still turns the run red, at the end.
+      - name: Refresh rankings
+        id: rankings
+        continue-on-error: true
+        run: python scripts/fetch-rankings.py
+
+      - name: Commit any changes
         run: |
           if [[ -z "$(git status --porcelain)" ]]; then
             echo "No changes."
@@ -40,5 +47,12 @@ jobs:
           git config user.name "results-updater"
           git config user.email "actions@github.com"
           git add script.js data/update-log.json data/review-needed.json
-          git commit -m "Add newly posted tournament results"
+          git commit -m "Update tournament results and rankings"
           git push
+
+      - name: Surface a ranking parse failure
+        if: steps.rankings.outcome == 'failure'
+        run: |
+          echo "fetch-rankings.py could not read one of the ranking sources."
+          echo "See the 'Refresh rankings' step above for which one and why."
+          exit 1
