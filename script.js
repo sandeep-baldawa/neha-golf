@@ -105,7 +105,7 @@ const config = {
    ========================================================================== */
 /* RANKINGS:BEGIN */
 const rankings = {
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "jgs": {
     "rank_overall": 3317,
     "gross_scoring_average": 86.9,
@@ -152,6 +152,27 @@ const rankings = {
     },
     {
       "date": "2026-11-26",
+      "jgs.rank_overall": 3317,
+      "jgs.gross_scoring_average": 86.9,
+      "jgs.class_rank": 797,
+      "jgs.state_rank": 519,
+      "jgs.state_class_rank": 115,
+      "jgs.events": 10,
+      "jgs.strength_of_tournaments": 94.7,
+      "jgs.scoring_diff": 11.17,
+      "tugr.global": 3402,
+      "tugr.relative_strokes": 23.4681693,
+      "tugr.country": 2991,
+      "tugr.state": 698,
+      "tugr.county": 32,
+      "tugr.hometown": 9,
+      "tugr.rounds": 54,
+      "tugr.competitors_played": 99,
+      "tugr.competitors_beaten": 22,
+      "tugr.win_rate": 22.2
+    },
+    {
+      "date": "2026-11-27",
       "jgs.rank_overall": 3317,
       "jgs.gross_scoring_average": 86.9,
       "jgs.class_rank": 797,
